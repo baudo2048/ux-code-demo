@@ -10,6 +10,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 <div id="ux-content-md" style="display:none">
 <div id="ux-post-post"># Hello ux-md
 Bla bla bla</div></div>
+<div id="ux-local-store" style="display:none">
+</div>
 <script>function accordion() 
 {
 var root = document.createElement('div')
@@ -85,28 +87,24 @@ for (var i = 0; i < acc.length; i++) {
 
 root.panelPrj = panelPrj
 
-/* document.json('files', {folder: 'default'}).then(data=>{
-    if(data.esito=='login'){
-        import('./login.js').then(module=>{
-            panelPrj.append(module.default())
-        })
-        return
-    }
 
-    data.forEach(v=>{
-      var item = document.createElement('h5')
-      item.innerHTML = v
-      item.style.cursor = 'pointer'
-      item.style.margin = '0'
-      item.style.padding = '15px'
-      item.onmouseover = ev => {item.style.background='radial-gradient(circle, rgba(60,57,57,1) 0%, rgba(60,58,58,1) 100%, rgba(86,110,159,1) 100%)'}
-      item.onmouseleave = ev => {item.style.background='initial'}
-      item.onclick = ev => {
-        document.eventManager('showFile', {fileName: v, folder: 'default'})
-      }
-      panelPrj.append(item)
-    })
-}) */
+
+data = ['app','head','body']
+
+data.forEach(v=>{
+  var item = document.createElement('h5')
+  item.innerHTML = v
+  item.style.cursor = 'pointer'
+  item.style.margin = '0'
+  item.style.padding = '15px'
+  item.onmouseover = ev => {item.style.background='radial-gradient(circle, rgba(60,57,57,1) 0%, rgba(60,58,58,1) 100%, rgba(86,110,159,1) 100%)'}
+  item.onmouseleave = ev => {item.style.background='initial'}
+  item.onclick = ev => {
+    document.eventManager('showFile', {fileName: v, folder: 'default'})
+  }
+  panelPrj.append(item)
+})
+
 
 /* fetch('/files', {
   method: 'POST',
@@ -160,272 +158,61 @@ style.textContent = ``
 root.appendChild(style)
 return root
 }
-function barProject() 
+function app() 
 {
-var topBar = document.createElement('div')
-topBar.style.display='flex'
-topBar.style.justifyContent='space-between'
-topBar.style.alignItems='center'
-topBar.style.border='3px solid black'
-topBar.style.background='rgb(60,57,57)'
-topBar.style.background='radial-gradient(circle, rgba(60,57,57,1) 0%, rgba(60,58,58,1) 100%, rgba(86,110,159,1) 100%)'
+var root = document.createElement('div')
+root.style.display='flex'
+root.style.flexDirection='column'
+root.style.height='100%'
+root.style.alignContent='center'
+root.style.background='rgb(2,0,36)'
+root.style.background='radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)'
 var div_7 = document.createElement('div')
 div_7.style.display='flex'
-var ctaNewProject = document.createElement('span')
-ctaNewProject.append(document.createTextNode( '+ Project'))
-ctaNewProject.style.margin='5px 5px'
-ctaNewProject.style.padding='10px'
-ctaNewProject.style.fontFamily='"Open Sans", "Courier New"'
-ctaNewProject.style.fontSize='12px'
-ctaNewProject.style.color='white'
-var ctaNewComponent = document.createElement('span')
-ctaNewComponent.append(document.createTextNode( '+ Component'))
+div_7.style.flexGrow='1'
+var content = document.createElement('div')
+content.style.display='flex'
+content.style.overflow='none'
+content.style.flexGrow='1'
+content.style.backgroundColor='#f3f3f3'
+var w2 = windowDev()
+var hlp = help()
 
-div_7.appendChild(ctaNewProject)
-
-ctaNewComponent.style.margin='5px 5px'
-ctaNewComponent.style.padding='10px'
-ctaNewComponent.style.fontFamily='"Open Sans", "Courier New"'
-ctaNewComponent.style.fontSize='12px'
-ctaNewComponent.style.color='white'
-
-div_7.appendChild(ctaNewComponent)
+content.appendChild(w2)
 
 
-topBar.appendChild(div_7)
+content.appendChild(hlp)
 
-ctaNewProject .onclick = ev => {
 
-}
+div_7.appendChild(content)
 
-ctaNewProject .onmouseover = ev => {
-    ctaNewProject.style.background = 'rgb(35,38,39)'
-    ctaNewProject.style.background = 'radial-gradient(circle, rgba(35,38,39,0.9982274159663865) 100%, rgba(235,235,235,1) 100%, rgba(86,110,159,1) 100%)'
-}
 
-ctaNewProject .onmouseleave = ev => {
-    ctaNewProject.style.background = 'initial'
-
-    //if(!isMouseOver) mnuFile.style.display = 'none'
-}
+root.appendChild(div_7)
 
 
 
-ctaNewComponent.onclick = ev => {
+//helpComp.style.display = 'none'
+w2.style.display = 'flex'
+hlp.style.display = 'none'
 
-}
 
-ctaNewComponent.onmouseover = ev => {
-    ctaNewComponent.style.background = 'rgb(35,38,39)'
-    ctaNewComponent.style.background = 'radial-gradient(circle, rgba(35,38,39,0.9982274159663865) 100%, rgba(235,235,235,1) 100%, rgba(86,110,159,1) 100%)'
-}
+document.register('app.showHelp', ev=> {
+    hlp.style.display = 'flex'
+    w2.style.display = 'none'
+})
 
-ctaNewComponent.onmouseleave = ev => {
-    ctaNewComponent.style.background = 'initial'
-
-    //if(!isMouseOver) mnuFile.style.display = 'none'
-}
-topBar.setAttribute('ux-comp-name','barProject')
+document.register('app.showEditor', ev=> {
+    hlp.style.display = 'none'
+    w2.style.display = 'flex'
+})
+root.setAttribute('ux-comp-name','app')
 let style = document.createElement('style')
-style.setAttribute('ux-comp-name-css','barProject')
-style.textContent = ``
-topBar.appendChild(style)
-return topBar
-}
-function body() 
-{
-var body = document.createElement('div')
-var homeDesktop_1 = homeDesktop()
-
-body.appendChild(homeDesktop_1)
-
-
-body.setAttribute('ux-comp-name','body')
-let style = document.createElement('style')
-style.setAttribute('ux-comp-name-css','body')
-style.textContent = ``
-body.appendChild(style)
-return body
-}
-function eventConf() 
-{
-var root = document.createElement('div')
-
-    function dispatch (eventName, msg) {
-        console.log('dispatch - ' + eventName);
-        var detail = {detail: msg};
-        document.dispatchEvent(new CustomEvent(eventName, detail));
-    }
-    
-    // export function dispatch2 (eventName, msg, from, to)
-    
-    function register (eventName, callback){
-        document.addEventListener(eventName, callback);
-    }
-    
-    function unregister (eventName, callback){
-        document.removeEventListener(eventName, callback);
-    }
-    
-    function registerDefault (callback){
-        document.addEventListener(callback.name, callback);
-    }
-    
-    document.registerDefault = registerDefault
-    document.em = dispatch
-    document.register = register
-    document.unregister = unregister
-
-
-root.setAttribute('ux-comp-name','eventConf')
-let style = document.createElement('style')
-style.setAttribute('ux-comp-name-css','eventConf')
+style.setAttribute('ux-comp-name-css','app')
 style.textContent = ``
 root.appendChild(style)
 return root
 }
-function head() 
-{
-var head = document.createElement('div')
-var meta_1 = document.createElement('meta')
-meta_1.setAttribute('charset', 'utf-8')
-var meta_3 = document.createElement('meta')
-
-head.appendChild(meta_1)
-
-meta_3.setAttribute('name', 'viewport')
-meta_3.setAttribute('content', 'width=device-width, initial-scale=1, shrink-to-fit=no')
-var meta_6 = document.createElement('meta')
-
-head.appendChild(meta_3)
-
-meta_6.setAttribute('http-equiv', 'x-ua-compatible')
-meta_6.setAttribute('content', 'ie=edge')
-var link_9 = document.createElement('link')
-
-head.appendChild(meta_6)
-
-link_9.setAttribute('href', 'https://use.fontawesome.com/releases/v5.15.2/css/all.css')
-link_9.setAttribute('rel', 'stylesheet')
-var link_12 = document.createElement('link')
-
-head.appendChild(link_9)
-
-link_12.setAttribute('href', 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap')
-link_12.setAttribute('rel', 'stylesheet')
-var link_15 = document.createElement('link')
-
-head.appendChild(link_12)
-
-link_15.setAttribute('rel', 'stylesheet')
-link_15.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons')
-var link_18 = document.createElement('link')
-
-head.appendChild(link_15)
-
-link_18.setAttribute('rel', 'stylesheet')
-link_18.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css')
-link_18.setAttribute('integrity', 'sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l')
-link_18.setAttribute('crossOrigin', 'anonymous')
-var link_23 = document.createElement('link')
-
-head.appendChild(link_18)
-
-link_23.setAttribute('href', '../assets/css/ux.css')
-link_23.setAttribute('rel', 'stylesheet')
-var link_26 = document.createElement('link')
-
-head.appendChild(link_23)
-
-link_26.setAttribute('href', '../assets/css/style.css')
-link_26.setAttribute('rel', 'stylesheet')
-var script_29 = document.createElement('script')
-
-head.appendChild(link_26)
-
-script_29.setAttribute('src', 'https://unpkg.com/@popperjs/core@2.4.0/dist/umd/popper.min.js')
-var script_31 = document.createElement('script')
-
-head.appendChild(script_29)
-
-script_31.setAttribute('src', 'https://code.jquery.com/jquery-3.2.1.slim.min.js')
-script_31.setAttribute('integrity', 'sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN')
-script_31.setAttribute('crossOrigin', 'anonymous')
-var script_35 = document.createElement('script')
-
-head.appendChild(script_31)
-
-script_35.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js')
-script_35.setAttribute('integrity', 'sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf')
-script_35.setAttribute('crossOrigin', 'anonymous')
-var script_39 = document.createElement('script')
-
-head.appendChild(script_35)
-
-script_39.setAttribute('src', 'https://unpkg.com/@reactivex/rxjs@6.0.0/dist/global/rxjs.umd.js')
-var script_41 = document.createElement('script')
-
-head.appendChild(script_39)
-
-script_41.setAttribute('src', 'https://d3js.org/d3.v6.min.js')
-var script_43 = document.createElement('script')
-
-head.appendChild(script_41)
-
-script_43.setAttribute('src', 'https://d3js.org/d3-dispatch.v2.min.js')
-var script_45 = document.createElement('script')
-
-head.appendChild(script_43)
-
-script_45.setAttribute('src', 'https://d3js.org/d3-selection.v2.min.js')
-var script_47 = document.createElement('script')
-
-head.appendChild(script_45)
-
-script_47.setAttribute('src', 'https://d3js.org/d3-drag.v2.min.js')
-var script_49 = document.createElement('script')
-
-head.appendChild(script_47)
-
-script_49.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.0.4/markdown-it.min.js')
-script_49.setAttribute('integrity', 'sha512-0DkA2RqFvfXBVeti0R1l0E8oMkmY0X+bAA2i02Ld8xhpjpvqORUcE/UBe+0KOPzi5iNah0aBpW6uaNNrqCk73Q==')
-script_49.setAttribute('crossOrigin', 'anonymous')
-var script_53 = document.createElement('script')
-
-head.appendChild(script_49)
-
-script_53.setAttribute('src', '../assets/js/ux.js')
-var title_55 = document.createElement('title')
-title_55.append(document.createTextNode( 'UX Basic Bootstrap Template'))
-
-head.appendChild(script_53)
-
-
-head.appendChild(title_55)
-
-eventConf()
-restConf()
-head.setAttribute('ux-comp-name','head')
-let style = document.createElement('style')
-style.setAttribute('ux-comp-name-css','head')
-style.textContent = ``
-head.appendChild(style)
-return head
-}
-function help() 
-{
-var root = document.createElement('div')
-//var w = windowDev.getCalculated width
-
-
-root.setAttribute('ux-comp-name','help')
-let style = document.createElement('style')
-style.setAttribute('ux-comp-name-css','help')
-style.textContent = ``
-root.appendChild(style)
-return root
-}
-function homeDesktop() 
+function app_three_layers() 
 {
 var root = document.createElement('div')
 root.style.display='flex'
@@ -546,11 +333,15 @@ content.style.flexGrow='1'
 content.style.backgroundColor='#f3f3f3'
 var loginPage = login()
 var w2 = windowDev()
+var showPublish = showPublishPage()
 
 content.appendChild(loginPage)
 
 
 content.appendChild(w2)
+
+
+content.appendChild(showPublish)
 
 
 div_68.appendChild(sidebar)
@@ -566,14 +357,9 @@ root.appendChild(div_68)
 
 loginPage.style.display = 'none'
 
-
-
 //helpComp.style.display = 'none'
-
-
-
-
 w2.style.display = 'flex'
+showPublish.style.display = 'none'
 
 
 
@@ -615,12 +401,1585 @@ document.register('homeDesktop.showLogin', ev => {
     w2.style.display = 'none'
     //helpComp.style.display = 'none'
 }) 
-root.setAttribute('ux-comp-name','homeDesktop')
+
+document.register('homeDesktop.showPublishPage', ev => {
+    loginPage.style.display = 'none'
+    w2.style.display = 'none'
+    showPublish.style.display = 'flex'
+})
+root.setAttribute('ux-comp-name','app_three_layers')
 let style = document.createElement('style')
-style.setAttribute('ux-comp-name-css','homeDesktop')
+style.setAttribute('ux-comp-name-css','app_three_layers')
 style.textContent = ``
 root.appendChild(style)
 return root
+}
+function barProject() 
+{
+var topBar = document.createElement('div')
+topBar.style.display='flex'
+topBar.style.justifyContent='space-between'
+topBar.style.alignItems='center'
+topBar.style.border='3px solid black'
+topBar.style.background='rgb(60,57,57)'
+topBar.style.background='radial-gradient(circle, rgba(60,57,57,1) 0%, rgba(60,58,58,1) 100%, rgba(86,110,159,1) 100%)'
+var div_7 = document.createElement('div')
+div_7.style.display='flex'
+var ctaNewProject = document.createElement('span')
+ctaNewProject.append(document.createTextNode( '+ Project'))
+ctaNewProject.style.margin='5px 5px'
+ctaNewProject.style.padding='10px'
+ctaNewProject.style.fontFamily='"Open Sans", "Courier New"'
+ctaNewProject.style.fontSize='12px'
+ctaNewProject.style.color='white'
+var ctaNewComponent = document.createElement('span')
+ctaNewComponent.append(document.createTextNode( '+ Component'))
+
+div_7.appendChild(ctaNewProject)
+
+ctaNewComponent.style.margin='5px 5px'
+ctaNewComponent.style.padding='10px'
+ctaNewComponent.style.fontFamily='"Open Sans", "Courier New"'
+ctaNewComponent.style.fontSize='12px'
+ctaNewComponent.style.color='white'
+
+div_7.appendChild(ctaNewComponent)
+
+
+topBar.appendChild(div_7)
+
+ctaNewProject.onclick = ev => {
+    // DTO CAPABILITIES ????
+    // dto capabilities ready
+
+    bp.newProject.save()
+
+    // OTHER UI STUFF
+
+}
+
+ctaNewProject .onmouseover = ev => {
+    ctaNewProject.style.background = 'rgb(35,38,39)'
+    ctaNewProject.style.background = 'radial-gradient(circle, rgba(35,38,39,0.9982274159663865) 100%, rgba(235,235,235,1) 100%, rgba(86,110,159,1) 100%)'
+}
+
+ctaNewProject .onmouseleave = ev => {
+    ctaNewProject.style.background = 'initial'
+
+    //if(!isMouseOver) mnuFile.style.display = 'none'
+}
+
+
+
+ctaNewComponent.onclick = ev => {
+
+}
+
+ctaNewComponent.onmouseover = ev => {
+    ctaNewComponent.style.background = 'rgb(35,38,39)'
+    ctaNewComponent.style.background = 'radial-gradient(circle, rgba(35,38,39,0.9982274159663865) 100%, rgba(235,235,235,1) 100%, rgba(86,110,159,1) 100%)'
+}
+
+ctaNewComponent.onmouseleave = ev => {
+    ctaNewComponent.style.background = 'initial'
+
+    //if(!isMouseOver) mnuFile.style.display = 'none'
+}
+topBar.setAttribute('ux-comp-name','barProject')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','barProject')
+style.textContent = ``
+topBar.appendChild(style)
+return topBar
+}
+function body() 
+{
+var body = document.createElement('div')
+var app_1 = app()
+
+body.appendChild(app_1)
+
+
+body.setAttribute('ux-comp-name','body')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','body')
+style.textContent = ``
+body.appendChild(style)
+return body
+}
+function downloadApp() 
+{
+var root = document.createElement('div')
+var h1_1 = document.createElement('h1')
+h1_1.append(document.createTextNode( 'Hello World'))
+var ctaDownload = document.createElement('button')
+ctaDownload.append(document.createTextNode( 'Download Project'))
+var a_3 = document.createElement('a')
+a_3.append(document.createTextNode( 'click to download'))
+a_3.setAttribute('href', 'data:text/plain;charset=utf-8,Hello content file... //encodeURIComponent(text)')
+a_3.setAttribute('download', 'sampleFileNameToDownload.txt')
+
+root.appendChild(h1_1)
+
+
+root.appendChild(ctaDownload)
+
+
+root.appendChild(a_3)
+
+ctaDownload.onclick = ev => {
+    //var storeDom = document.getElementById('ux-local-store')
+    //storeDom.innerHTML = `CONTENT HERE ...`
+    //download entirePage    
+}
+
+
+root.setAttribute('ux-comp-name','downloadApp')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','downloadApp')
+style.textContent = ``
+root.appendChild(style)
+return root
+}
+function eventConf() 
+{
+var root = document.createElement('div')
+
+    function dispatch (eventName, msg) {
+        console.log('dispatch - ' + eventName);
+        var detail = {detail: msg};
+        document.dispatchEvent(new CustomEvent(eventName, detail));
+    }
+    
+    // export function dispatch2 (eventName, msg, from, to)
+    
+    function register (eventName, callback){
+        document.addEventListener(eventName, callback);
+    }
+    
+    function unregister (eventName, callback){
+        document.removeEventListener(eventName, callback);
+    }
+    
+    function registerDefault (callback){
+        document.addEventListener(callback.name, callback);
+    }
+    
+    document.registerDefault = registerDefault
+    document.em = dispatch
+    document.register = register
+    document.unregister = unregister
+
+
+
+
+   // *****************
+
+root.setAttribute('ux-comp-name','eventConf')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','eventConf')
+style.textContent = ``
+root.appendChild(style)
+return root
+}
+function head() 
+{
+var head = document.createElement('div')
+var meta_1 = document.createElement('meta')
+meta_1.setAttribute('charset', 'utf-8')
+var meta_3 = document.createElement('meta')
+
+head.appendChild(meta_1)
+
+meta_3.setAttribute('name', 'viewport')
+meta_3.setAttribute('content', 'width=device-width, initial-scale=1, shrink-to-fit=no')
+var meta_6 = document.createElement('meta')
+
+head.appendChild(meta_3)
+
+meta_6.setAttribute('http-equiv', 'x-ua-compatible')
+meta_6.setAttribute('content', 'ie=edge')
+var link_9 = document.createElement('link')
+
+head.appendChild(meta_6)
+
+link_9.setAttribute('href', 'https://use.fontawesome.com/releases/v5.15.2/css/all.css')
+link_9.setAttribute('rel', 'stylesheet')
+var link_12 = document.createElement('link')
+
+head.appendChild(link_9)
+
+link_12.setAttribute('href', 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap')
+link_12.setAttribute('rel', 'stylesheet')
+var link_15 = document.createElement('link')
+
+head.appendChild(link_12)
+
+link_15.setAttribute('rel', 'stylesheet')
+link_15.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons')
+var link_18 = document.createElement('link')
+
+head.appendChild(link_15)
+
+link_18.setAttribute('rel', 'stylesheet')
+link_18.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css')
+link_18.setAttribute('integrity', 'sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l')
+link_18.setAttribute('crossOrigin', 'anonymous')
+var link_23 = document.createElement('link')
+
+head.appendChild(link_18)
+
+link_23.setAttribute('href', '../assets/css/ux.css')
+link_23.setAttribute('rel', 'stylesheet')
+var link_26 = document.createElement('link')
+
+head.appendChild(link_23)
+
+link_26.setAttribute('href', '../assets/css/style.css')
+link_26.setAttribute('rel', 'stylesheet')
+var script_29 = document.createElement('script')
+
+head.appendChild(link_26)
+
+script_29.setAttribute('src', 'https://unpkg.com/@popperjs/core@2.4.0/dist/umd/popper.min.js')
+var script_31 = document.createElement('script')
+
+head.appendChild(script_29)
+
+script_31.setAttribute('src', 'https://code.jquery.com/jquery-3.2.1.slim.min.js')
+script_31.setAttribute('integrity', 'sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN')
+script_31.setAttribute('crossOrigin', 'anonymous')
+var script_35 = document.createElement('script')
+
+head.appendChild(script_31)
+
+script_35.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js')
+script_35.setAttribute('integrity', 'sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf')
+script_35.setAttribute('crossOrigin', 'anonymous')
+var script_39 = document.createElement('script')
+
+head.appendChild(script_35)
+
+script_39.setAttribute('src', 'https://unpkg.com/@reactivex/rxjs@6.0.0/dist/global/rxjs.umd.js')
+var script_41 = document.createElement('script')
+
+head.appendChild(script_39)
+
+script_41.setAttribute('src', 'https://d3js.org/d3.v6.min.js')
+var script_43 = document.createElement('script')
+
+head.appendChild(script_41)
+
+script_43.setAttribute('src', 'https://d3js.org/d3-dispatch.v2.min.js')
+var script_45 = document.createElement('script')
+
+head.appendChild(script_43)
+
+script_45.setAttribute('src', 'https://d3js.org/d3-selection.v2.min.js')
+var script_47 = document.createElement('script')
+
+head.appendChild(script_45)
+
+script_47.setAttribute('src', 'https://d3js.org/d3-drag.v2.min.js')
+var script_49 = document.createElement('script')
+
+head.appendChild(script_47)
+
+script_49.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.0.4/markdown-it.min.js')
+script_49.setAttribute('integrity', 'sha512-0DkA2RqFvfXBVeti0R1l0E8oMkmY0X+bAA2i02Ld8xhpjpvqORUcE/UBe+0KOPzi5iNah0aBpW6uaNNrqCk73Q==')
+script_49.setAttribute('crossOrigin', 'anonymous')
+var script_53 = document.createElement('script')
+
+head.appendChild(script_49)
+
+script_53.setAttribute('src', '../assets/js/ux.js')
+var script_55 = document.createElement('script')
+
+head.appendChild(script_53)
+
+script_55.setAttribute('src', '../assets/js/ux-lang.js')
+var script_57 = document.createElement('script')
+
+head.appendChild(script_55)
+
+script_57.setAttribute('async', 'true')
+script_57.setAttribute('src', 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6995551176842381')
+script_57.setAttribute('crossOrigin', 'anonymous')
+var script_61 = document.createElement('script')
+
+head.appendChild(script_57)
+
+script_61.setAttribute('async', 'true')
+script_61.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=UA-214569051-1')
+var googleAnalitycsCode = document.createElement('script')
+
+head.appendChild(script_61)
+
+var title_65 = document.createElement('title')
+title_65.append(document.createTextNode( 'UX Basic Bootstrap Template'))
+
+head.appendChild(googleAnalitycsCode)
+
+
+head.appendChild(title_65)
+
+eventConf()
+restConf()
+
+
+googleAnalitycsCode.innerHTML = `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-214569051-1');`
+head.setAttribute('ux-comp-name','head')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','head')
+style.textContent = ``
+head.appendChild(style)
+return head
+}
+function help() 
+{
+var div_0 = document.createElement('div')
+div_0.style.display='flex'
+div_0.style.flexBasis='100%'
+div_0.style.overflow='auto'
+div_0.setAttribute('className', 'article')
+div_0.style.backgroundColor='white'
+var h1_6 = document.createElement('h1')
+h1_6.append(document.createTextNode( 'Getting started'))
+var p_7 = document.createElement('p')
+p_7.append(document.createTextNode( 'Create interactive web application for different devices (phone, tablet, laptop) in less time as possible is not easy.'))
+var H2_8 = document.createElement('H2')
+H2_8.append(document.createTextNode( 'First example'))
+var code_9 = document.createElement('code')
+var pre_10 = document.createElement('pre')
+pre_10.append(document.createTextNode( 'div root'))
+var pre_11 = document.createElement('pre')
+pre_11.append(document.createTextNode( '    -display flex'))
+var pre_12 = document.createElement('pre')
+pre_12.append(document.createTextNode( '    -backgroundColor red'))
+var pre_13 = document.createElement('pre')
+pre_13.append(document.createTextNode( '    .id almostUselessInUxLang'))
+var pre_14 = document.createElement('pre')
+pre_14.append(document.createTextNode( '    .className cssClass1 cssClass2 ...'))
+var pre_15 = document.createElement('pre')
+pre_15.append(document.createTextNode( '    h1 \'Title page'))
+var pre_16 = document.createElement('pre')
+pre_16.append(document.createTextNode( '    p \'a paragraph'))
+var pre_17 = document.createElement('pre')
+pre_17.append(document.createTextNode( '    img'))
+var pre_18 = document.createElement('pre')
+pre_18.append(document.createTextNode( '        .src ./path/to/file'))
+var p_19 = document.createElement('p')
+p_19.append(document.createTextNode( 'a ux file is the representation of a rooted tree. The tree can be a model for an html document, svg document, a piece of html document (a component).'))
+
+code_9.appendChild(pre_10)
+
+
+code_9.appendChild(pre_11)
+
+
+code_9.appendChild(pre_12)
+
+
+code_9.appendChild(pre_13)
+
+
+code_9.appendChild(pre_14)
+
+
+code_9.appendChild(pre_15)
+
+
+code_9.appendChild(pre_16)
+
+
+code_9.appendChild(pre_17)
+
+
+code_9.appendChild(pre_18)
+
+var code_20 = document.createElement('code')
+var pre_21 = document.createElement('pre')
+pre_21.append(document.createTextNode( 'div root                     //div is an htmlTagName, root a varName you can use in your js file.'))
+var br_22 = document.createElement('br')
+
+code_20.appendChild(pre_21)
+
+var code_23 = document.createElement('code')
+var pre_24 = document.createElement('pre')
+pre_24.append(document.createTextNode( '    -display flex            //-display is a css property written in javascript style. flex is the value of the property'))
+var br_25 = document.createElement('br')
+
+code_23.appendChild(pre_24)
+
+var code_26 = document.createElement('code')
+var pre_27 = document.createElement('pre')
+pre_27.append(document.createTextNode( '    -backgroundColor red    //css property'))
+var br_28 = document.createElement('br')
+
+code_26.appendChild(pre_27)
+
+var code_29 = document.createElement('code')
+var pre_30 = document.createElement('pre')
+pre_30.append(document.createTextNode( '    .id almostUselessInUxLang'))
+var pre_31 = document.createElement('pre')
+pre_31.append(document.createTextNode( '    .className cssClass1 cssClass2 ...'))
+var pre_32 = document.createElement('pre')
+pre_32.append(document.createTextNode( '//the (.) dot is used to se the attribute of an xml tag.'))
+var br_33 = document.createElement('br')
+
+code_29.appendChild(pre_30)
+
+
+code_29.appendChild(pre_31)
+
+
+code_29.appendChild(pre_32)
+
+var code_34 = document.createElement('code')
+var pre_35 = document.createElement('pre')
+pre_35.append(document.createTextNode( '    h1 \'Title page'))
+var pre_36 = document.createElement('pre')
+pre_36.append(document.createTextNode( '//h1 is an html heading, it is root\'s element child. The symbol \' (apostrophe) is used for string.'))
+var br_37 = document.createElement('br')
+
+code_34.appendChild(pre_35)
+
+
+code_34.appendChild(pre_36)
+
+var code_38 = document.createElement('code')
+var pre_39 = document.createElement('pre')
+pre_39.append(document.createTextNode( '    p \'a paragraph'))
+var pre_40 = document.createElement('pre')
+pre_40.append(document.createTextNode( '    img'))
+var pre_41 = document.createElement('pre')
+pre_41.append(document.createTextNode( '        .src ./path/to/file'))
+var h2_42 = document.createElement('h2')
+h2_42.append(document.createTextNode( 'Import script src'))
+
+code_38.appendChild(pre_39)
+
+
+code_38.appendChild(pre_40)
+
+
+code_38.appendChild(pre_41)
+
+var code_43 = document.createElement('code')
+var pre_44 = document.createElement('pre')
+pre_44.append(document.createTextNode( 'div root'))
+var pre_45 = document.createElement('pre')
+pre_45.append(document.createTextNode( '    script'))
+var pre_46 = document.createElement('pre')
+pre_46.append(document.createTextNode( '        .src https://code.highcharts.com/6.0.6/highcharts.js'))
+var pre_47 = document.createElement('pre')
+pre_47.append(document.createTextNode( '    script'))
+var pre_48 = document.createElement('pre')
+pre_48.append(document.createTextNode( '        .src https://code.highcharts.com/6.0.6/highcharts-more.js'))
+var pre_49 = document.createElement('pre')
+pre_49.append(document.createTextNode( '    script'))
+var pre_50 = document.createElement('pre')
+pre_50.append(document.createTextNode( '        .src https://cdn.rawgit.com/mekhatria/hexagon/master/hexagon.js'))
+var p_51 = document.createElement('p')
+p_51.append(document.createTextNode( 'Sarebbe utile poter scrivere (would be better if i could write):'))
+
+code_43.appendChild(pre_44)
+
+
+code_43.appendChild(pre_45)
+
+
+code_43.appendChild(pre_46)
+
+
+code_43.appendChild(pre_47)
+
+
+code_43.appendChild(pre_48)
+
+
+code_43.appendChild(pre_49)
+
+
+code_43.appendChild(pre_50)
+
+var code_52 = document.createElement('code')
+var pre_53 = document.createElement('pre')
+pre_53.append(document.createTextNode( 'div root'))
+var pre_54 = document.createElement('pre')
+pre_54.append(document.createTextNode( '    script https://code.highcharts.com/6.0.6/highcharts.js'))
+var p_55 = document.createElement('p')
+p_55.append(document.createTextNode( 'Get involve in this feature enhancement.'))
+
+code_52.appendChild(pre_53)
+
+
+code_52.appendChild(pre_54)
+
+var h2_56 = document.createElement('h2')
+h2_56.append(document.createTextNode( 'Debug component'))
+var p_57 = document.createElement('p')
+p_57.append(document.createTextNode( 'If your component don\'t show anything, just open chrome developer tools (CTRL-SHIFT-I)'))
+var p_58 = document.createElement('p')
+p_58.append(document.createTextNode( 'You need do nothing else because your component is alread deployed on editor inner dom.'))
+var h2_59 = document.createElement('h2')
+h2_59.append(document.createTextNode( 'More complicated sample'))
+var img_60 = document.createElement('img')
+img_60.style.width='640px'
+img_60.style.height='400px'
+img_60.setAttribute('src', './img/windowDev.png')
+var p_64 = document.createElement('p')
+p_64.append(document.createTextNode( 'this is the sample code for windowDev.ux:'))
+
+div_0.appendChild(h1_6)
+
+
+div_0.appendChild(p_7)
+
+
+div_0.appendChild(H2_8)
+
+
+div_0.appendChild(code_9)
+
+
+div_0.appendChild(p_19)
+
+
+div_0.appendChild(code_20)
+
+
+div_0.appendChild(br_22)
+
+
+div_0.appendChild(code_23)
+
+
+div_0.appendChild(br_25)
+
+
+div_0.appendChild(code_26)
+
+
+div_0.appendChild(br_28)
+
+
+div_0.appendChild(code_29)
+
+
+div_0.appendChild(br_33)
+
+
+div_0.appendChild(code_34)
+
+
+div_0.appendChild(br_37)
+
+
+div_0.appendChild(code_38)
+
+
+div_0.appendChild(h2_42)
+
+
+div_0.appendChild(code_43)
+
+
+div_0.appendChild(p_51)
+
+
+div_0.appendChild(code_52)
+
+
+div_0.appendChild(p_55)
+
+
+div_0.appendChild(h2_56)
+
+
+div_0.appendChild(p_57)
+
+
+div_0.appendChild(p_58)
+
+
+div_0.appendChild(h2_59)
+
+
+div_0.appendChild(img_60)
+
+var code_65 = document.createElement('code')
+var pre_66 = document.createElement('pre')
+pre_66.append(document.createTextNode( ''))
+var pre_67 = document.createElement('pre')
+pre_67.append(document.createTextNode( 'div root'))
+var pre_68 = document.createElement('pre')
+pre_68.append(document.createTextNode( '    -display flex'))
+var pre_69 = document.createElement('pre')
+pre_69.append(document.createTextNode( '    -position fixed'))
+var pre_70 = document.createElement('pre')
+pre_70.append(document.createTextNode( '    -width 660px'))
+var pre_71 = document.createElement('pre')
+pre_71.append(document.createTextNode( '    -height 580px'))
+var pre_72 = document.createElement('pre')
+pre_72.append(document.createTextNode( '    -top 53px'))
+var pre_73 = document.createElement('pre')
+pre_73.append(document.createTextNode( '    -left 249px'))
+var pre_74 = document.createElement('pre')
+pre_74.append(document.createTextNode( '    -flexDirection column'))
+var pre_75 = document.createElement('pre')
+pre_75.append(document.createTextNode( '    -border 3px solid black'))
+var pre_76 = document.createElement('pre')
+pre_76.append(document.createTextNode( '    -overflow none'))
+var pre_77 = document.createElement('pre')
+pre_77.append(document.createTextNode( '    -zIndex 100'))
+var pre_78 = document.createElement('pre')
+pre_78.append(document.createTextNode( '    -boxSizing border-box'))
+var pre_79 = document.createElement('pre')
+pre_79.append(document.createTextNode( ''))
+var pre_80 = document.createElement('pre')
+pre_80.append(document.createTextNode( '    div topBar'))
+var pre_81 = document.createElement('pre')
+pre_81.append(document.createTextNode( '        -display flex'))
+var pre_82 = document.createElement('pre')
+pre_82.append(document.createTextNode( '        -justifyContent space-between'))
+var pre_83 = document.createElement('pre')
+pre_83.append(document.createTextNode( '        -alignItems center'))
+var pre_84 = document.createElement('pre')
+pre_84.append(document.createTextNode( '        -backgroundColor #f3f3f3'))
+var pre_85 = document.createElement('pre')
+pre_85.append(document.createTextNode( ''))
+var pre_86 = document.createElement('pre')
+pre_86.append(document.createTextNode( '        div'))
+var pre_87 = document.createElement('pre')
+pre_87.append(document.createTextNode( '            -display flex'))
+var pre_88 = document.createElement('pre')
+pre_88.append(document.createTextNode( '            img windowImgMove'))
+var pre_89 = document.createElement('pre')
+pre_89.append(document.createTextNode( '                .src ./img/baseline_open_with_black_18dp.png'))
+var pre_90 = document.createElement('pre')
+pre_90.append(document.createTextNode( ''))
+var pre_91 = document.createElement('pre')
+pre_91.append(document.createTextNode( '            img imgCode'))
+var pre_92 = document.createElement('pre')
+pre_92.append(document.createTextNode( '                .src ./img/baseline_code_black_18dp.png'))
+var pre_93 = document.createElement('pre')
+pre_93.append(document.createTextNode( ''))
+var pre_94 = document.createElement('pre')
+pre_94.append(document.createTextNode( '            img imgScript'))
+var pre_95 = document.createElement('pre')
+pre_95.append(document.createTextNode( '                .src ./img/baseline_description_black_18dp.png'))
+var pre_96 = document.createElement('pre')
+pre_96.append(document.createTextNode( ''))
+var pre_97 = document.createElement('pre')
+pre_97.append(document.createTextNode( '            img imgCss'))
+var pre_98 = document.createElement('pre')
+pre_98.append(document.createTextNode( '                .src ./img/baseline_text_format_black_18dp.png'))
+var pre_99 = document.createElement('pre')
+pre_99.append(document.createTextNode( ''))
+var pre_100 = document.createElement('pre')
+pre_100.append(document.createTextNode( '            img imgSaveAlt'))
+var pre_101 = document.createElement('pre')
+pre_101.append(document.createTextNode( '                .src ./img/baseline_save_black_18dp.png'))
+var pre_102 = document.createElement('pre')
+pre_102.append(document.createTextNode( ''))
+var pre_103 = document.createElement('pre')
+pre_103.append(document.createTextNode( '            img imgPreview'))
+var pre_104 = document.createElement('pre')
+pre_104.append(document.createTextNode( '                .src ./img/baseline_preview_black_18dp.png'))
+var pre_105 = document.createElement('pre')
+pre_105.append(document.createTextNode( ''))
+var pre_106 = document.createElement('pre')
+pre_106.append(document.createTextNode( '            img imgDesign'))
+var pre_107 = document.createElement('pre')
+pre_107.append(document.createTextNode( '                .src ./img/baseline_design_services_black_18dp.png'))
+var pre_108 = document.createElement('pre')
+pre_108.append(document.createTextNode( ''))
+var pre_109 = document.createElement('pre')
+pre_109.append(document.createTextNode( '            img imgDownload'))
+var pre_110 = document.createElement('pre')
+pre_110.append(document.createTextNode( '                .src ./img/baseline_get_app_black_18dp.png'))
+var pre_111 = document.createElement('pre')
+pre_111.append(document.createTextNode( ''))
+var pre_112 = document.createElement('pre')
+pre_112.append(document.createTextNode( '        div'))
+var pre_113 = document.createElement('pre')
+pre_113.append(document.createTextNode( '            -display flex'))
+var pre_114 = document.createElement('pre')
+pre_114.append(document.createTextNode( '            -flexGrow 1'))
+var pre_115 = document.createElement('pre')
+pre_115.append(document.createTextNode( '            input fileName'))
+var pre_116 = document.createElement('pre')
+pre_116.append(document.createTextNode( '                -width 100%'))
+var pre_117 = document.createElement('pre')
+pre_117.append(document.createTextNode( '                -height 30px'))
+var pre_118 = document.createElement('pre')
+pre_118.append(document.createTextNode( '                -marginLeft 10px'))
+var pre_119 = document.createElement('pre')
+pre_119.append(document.createTextNode( '                -marginRight 10px'))
+var pre_120 = document.createElement('pre')
+pre_120.append(document.createTextNode( '                -fontSize large'))
+var pre_121 = document.createElement('pre')
+pre_121.append(document.createTextNode( '                .type text'))
+var pre_122 = document.createElement('pre')
+pre_122.append(document.createTextNode( '                .value fileName.ux'))
+var pre_123 = document.createElement('pre')
+pre_123.append(document.createTextNode( ''))
+var pre_124 = document.createElement('pre')
+pre_124.append(document.createTextNode( '        div'))
+var pre_125 = document.createElement('pre')
+pre_125.append(document.createTextNode( '            -display flex'))
+var pre_126 = document.createElement('pre')
+pre_126.append(document.createTextNode( '            img windowImgMaximize'))
+var pre_127 = document.createElement('pre')
+pre_127.append(document.createTextNode( '                .src ./img/baseline_aspect_ratio_black_18dp.png'))
+var pre_128 = document.createElement('pre')
+pre_128.append(document.createTextNode( ''))
+var pre_129 = document.createElement('pre')
+pre_129.append(document.createTextNode( '            img windowImgClose'))
+var pre_130 = document.createElement('pre')
+pre_130.append(document.createTextNode( '                .src ./img/baseline_highlight_off_black_18dp.png'))
+var pre_131 = document.createElement('pre')
+pre_131.append(document.createTextNode( ''))
+var pre_132 = document.createElement('pre')
+pre_132.append(document.createTextNode( '    div contentArea'))
+var pre_133 = document.createElement('pre')
+pre_133.append(document.createTextNode( '        -display none'))
+var pre_134 = document.createElement('pre')
+pre_134.append(document.createTextNode( '        -flexGrow 1'))
+var pre_135 = document.createElement('pre')
+pre_135.append(document.createTextNode( '        -backgroundColor white'))
+var pre_136 = document.createElement('pre')
+pre_136.append(document.createTextNode( ''))
+var pre_137 = document.createElement('pre')
+pre_137.append(document.createTextNode( '    div codeArea'))
+var pre_138 = document.createElement('pre')
+pre_138.append(document.createTextNode( '        -display flex'))
+var pre_139 = document.createElement('pre')
+pre_139.append(document.createTextNode( '        -flexGrow 1'))
+var pre_140 = document.createElement('pre')
+pre_140.append(document.createTextNode( ''))
+var pre_141 = document.createElement('pre')
+pre_141.append(document.createTextNode( '        textarea textareaCode'))
+var pre_142 = document.createElement('pre')
+pre_142.append(document.createTextNode( '            -resize none'))
+var pre_143 = document.createElement('pre')
+pre_143.append(document.createTextNode( '            -width 100%'))
+var pre_144 = document.createElement('pre')
+pre_144.append(document.createTextNode( '            -height 100%'))
+var pre_145 = document.createElement('pre')
+pre_145.append(document.createTextNode( '            -fontFamily Consolas, "Courier New", monospace'))
+var pre_146 = document.createElement('pre')
+pre_146.append(document.createTextNode( '            -fontSize 14px'))
+var pre_147 = document.createElement('pre')
+pre_147.append(document.createTextNode( '            -backgroundColor black'))
+var pre_148 = document.createElement('pre')
+pre_148.append(document.createTextNode( '            -color white'))
+var pre_149 = document.createElement('pre')
+pre_149.append(document.createTextNode( ''))
+var pre_150 = document.createElement('pre')
+pre_150.append(document.createTextNode( '        textarea textareaScript'))
+var pre_151 = document.createElement('pre')
+pre_151.append(document.createTextNode( '            -resize none'))
+var pre_152 = document.createElement('pre')
+pre_152.append(document.createTextNode( '            -width 100%'))
+var pre_153 = document.createElement('pre')
+pre_153.append(document.createTextNode( '            -height 100%'))
+var pre_154 = document.createElement('pre')
+pre_154.append(document.createTextNode( '            -fontFamily Consolas, "Courier New", monospace'))
+var pre_155 = document.createElement('pre')
+pre_155.append(document.createTextNode( '            -fontSize 14px'))
+var pre_156 = document.createElement('pre')
+pre_156.append(document.createTextNode( '            -backgroundColor black'))
+var pre_157 = document.createElement('pre')
+pre_157.append(document.createTextNode( '            -color white'))
+var pre_158 = document.createElement('pre')
+pre_158.append(document.createTextNode( '            -display none'))
+var pre_159 = document.createElement('pre')
+pre_159.append(document.createTextNode( ''))
+var pre_160 = document.createElement('pre')
+pre_160.append(document.createTextNode( '        textarea textareaCss'))
+var pre_161 = document.createElement('pre')
+pre_161.append(document.createTextNode( '            -resize none'))
+var pre_162 = document.createElement('pre')
+pre_162.append(document.createTextNode( '            -width 100%'))
+var pre_163 = document.createElement('pre')
+pre_163.append(document.createTextNode( '            -height 100%'))
+var pre_164 = document.createElement('pre')
+pre_164.append(document.createTextNode( '            -fontFamily Consolas, "Courier New", monospace'))
+var pre_165 = document.createElement('pre')
+pre_165.append(document.createTextNode( '            -fontSize 14px'))
+var pre_166 = document.createElement('pre')
+pre_166.append(document.createTextNode( '            -backgroundColor black'))
+var pre_167 = document.createElement('pre')
+pre_167.append(document.createTextNode( '            -color white'))
+var pre_168 = document.createElement('pre')
+pre_168.append(document.createTextNode( '            -display none'))
+var pre_169 = document.createElement('pre')
+pre_169.append(document.createTextNode( ''))
+var pre_170 = document.createElement('pre')
+pre_170.append(document.createTextNode( '    div resizer'))
+var pre_171 = document.createElement('pre')
+pre_171.append(document.createTextNode( '        -position absolute'))
+var pre_172 = document.createElement('pre')
+pre_172.append(document.createTextNode( '        -width 3px'))
+var pre_173 = document.createElement('pre')
+pre_173.append(document.createTextNode( '        -height 3px'))
+var pre_174 = document.createElement('pre')
+pre_174.append(document.createTextNode( '        -borderRadius 50%'))
+var pre_175 = document.createElement('pre')
+pre_175.append(document.createTextNode( '        -border 3px solid #4286f4'))
+var pre_176 = document.createElement('pre')
+pre_176.append(document.createTextNode( '        -right -5px'))
+var pre_177 = document.createElement('pre')
+pre_177.append(document.createTextNode( '        -bottom -5px'))
+var pre_178 = document.createElement('pre')
+pre_178.append(document.createTextNode( '        -cursor nwse-resize'))
+var h2_179 = document.createElement('h2')
+h2_179.append(document.createTextNode( 'HighCharts Example'))
+
+code_65.appendChild(pre_66)
+
+
+code_65.appendChild(pre_67)
+
+
+code_65.appendChild(pre_68)
+
+
+code_65.appendChild(pre_69)
+
+
+code_65.appendChild(pre_70)
+
+
+code_65.appendChild(pre_71)
+
+
+code_65.appendChild(pre_72)
+
+
+code_65.appendChild(pre_73)
+
+
+code_65.appendChild(pre_74)
+
+
+code_65.appendChild(pre_75)
+
+
+code_65.appendChild(pre_76)
+
+
+code_65.appendChild(pre_77)
+
+
+code_65.appendChild(pre_78)
+
+
+code_65.appendChild(pre_79)
+
+
+code_65.appendChild(pre_80)
+
+
+code_65.appendChild(pre_81)
+
+
+code_65.appendChild(pre_82)
+
+
+code_65.appendChild(pre_83)
+
+
+code_65.appendChild(pre_84)
+
+
+code_65.appendChild(pre_85)
+
+
+code_65.appendChild(pre_86)
+
+
+code_65.appendChild(pre_87)
+
+
+code_65.appendChild(pre_88)
+
+
+code_65.appendChild(pre_89)
+
+
+code_65.appendChild(pre_90)
+
+
+code_65.appendChild(pre_91)
+
+
+code_65.appendChild(pre_92)
+
+
+code_65.appendChild(pre_93)
+
+
+code_65.appendChild(pre_94)
+
+
+code_65.appendChild(pre_95)
+
+
+code_65.appendChild(pre_96)
+
+
+code_65.appendChild(pre_97)
+
+
+code_65.appendChild(pre_98)
+
+
+code_65.appendChild(pre_99)
+
+
+code_65.appendChild(pre_100)
+
+
+code_65.appendChild(pre_101)
+
+
+code_65.appendChild(pre_102)
+
+
+code_65.appendChild(pre_103)
+
+
+code_65.appendChild(pre_104)
+
+
+code_65.appendChild(pre_105)
+
+
+code_65.appendChild(pre_106)
+
+
+code_65.appendChild(pre_107)
+
+
+code_65.appendChild(pre_108)
+
+
+code_65.appendChild(pre_109)
+
+
+code_65.appendChild(pre_110)
+
+
+code_65.appendChild(pre_111)
+
+
+code_65.appendChild(pre_112)
+
+
+code_65.appendChild(pre_113)
+
+
+code_65.appendChild(pre_114)
+
+
+code_65.appendChild(pre_115)
+
+
+code_65.appendChild(pre_116)
+
+
+code_65.appendChild(pre_117)
+
+
+code_65.appendChild(pre_118)
+
+
+code_65.appendChild(pre_119)
+
+
+code_65.appendChild(pre_120)
+
+
+code_65.appendChild(pre_121)
+
+
+code_65.appendChild(pre_122)
+
+
+code_65.appendChild(pre_123)
+
+
+code_65.appendChild(pre_124)
+
+
+code_65.appendChild(pre_125)
+
+
+code_65.appendChild(pre_126)
+
+
+code_65.appendChild(pre_127)
+
+
+code_65.appendChild(pre_128)
+
+
+code_65.appendChild(pre_129)
+
+
+code_65.appendChild(pre_130)
+
+
+code_65.appendChild(pre_131)
+
+
+code_65.appendChild(pre_132)
+
+
+code_65.appendChild(pre_133)
+
+
+code_65.appendChild(pre_134)
+
+
+code_65.appendChild(pre_135)
+
+
+code_65.appendChild(pre_136)
+
+
+code_65.appendChild(pre_137)
+
+
+code_65.appendChild(pre_138)
+
+
+code_65.appendChild(pre_139)
+
+
+code_65.appendChild(pre_140)
+
+
+code_65.appendChild(pre_141)
+
+
+code_65.appendChild(pre_142)
+
+
+code_65.appendChild(pre_143)
+
+
+code_65.appendChild(pre_144)
+
+
+code_65.appendChild(pre_145)
+
+
+code_65.appendChild(pre_146)
+
+
+code_65.appendChild(pre_147)
+
+
+code_65.appendChild(pre_148)
+
+
+code_65.appendChild(pre_149)
+
+
+code_65.appendChild(pre_150)
+
+
+code_65.appendChild(pre_151)
+
+
+code_65.appendChild(pre_152)
+
+
+code_65.appendChild(pre_153)
+
+
+code_65.appendChild(pre_154)
+
+
+code_65.appendChild(pre_155)
+
+
+code_65.appendChild(pre_156)
+
+
+code_65.appendChild(pre_157)
+
+
+code_65.appendChild(pre_158)
+
+
+code_65.appendChild(pre_159)
+
+
+code_65.appendChild(pre_160)
+
+
+code_65.appendChild(pre_161)
+
+
+code_65.appendChild(pre_162)
+
+
+code_65.appendChild(pre_163)
+
+
+code_65.appendChild(pre_164)
+
+
+code_65.appendChild(pre_165)
+
+
+code_65.appendChild(pre_166)
+
+
+code_65.appendChild(pre_167)
+
+
+code_65.appendChild(pre_168)
+
+
+code_65.appendChild(pre_169)
+
+
+code_65.appendChild(pre_170)
+
+
+code_65.appendChild(pre_171)
+
+
+code_65.appendChild(pre_172)
+
+
+code_65.appendChild(pre_173)
+
+
+code_65.appendChild(pre_174)
+
+
+code_65.appendChild(pre_175)
+
+
+code_65.appendChild(pre_176)
+
+
+code_65.appendChild(pre_177)
+
+
+code_65.appendChild(pre_178)
+
+var p_180 = document.createElement('p')
+p_180.append(document.createTextNode( 'create an highcharts component with ux lang'))
+var p_181 = document.createElement('p')
+p_181.append(document.createTextNode( 'Example, highchartUsa.ux:'))
+var p_182 = document.createElement('p')
+p_182.append(document.createTextNode( '*highchartUsa'))
+var p_183 = document.createElement('p')
+p_183.append(document.createTextNode( 'ux source code (ux files are html files written with the ux language)'))
+var div_184 = document.createElement('div')
+var img_185 = document.createElement('img')
+img_185.setAttribute('src', './img/baseline_code_black_18dp.png')
+var code_187 = document.createElement('code')
+
+div_184.appendChild(img_185)
+
+
+div_0.appendChild(p_64)
+
+
+div_0.appendChild(code_65)
+
+
+div_0.appendChild(h2_179)
+
+
+div_0.appendChild(p_180)
+
+
+div_0.appendChild(p_181)
+
+
+div_0.appendChild(p_182)
+
+
+div_0.appendChild(p_183)
+
+
+div_0.appendChild(div_184)
+
+var pre_188 = document.createElement('pre')
+pre_188.append(document.createTextNode( 'div root'))
+var pre_189 = document.createElement('pre')
+pre_189.append(document.createTextNode( '    .id container'))
+var pre_190 = document.createElement('pre')
+pre_190.append(document.createTextNode( '    -height 585px'))
+var pre_191 = document.createElement('pre')
+pre_191.append(document.createTextNode( '    -width 1000px'))
+var p_192 = document.createElement('p')
+p_192.append(document.createTextNode( 'In your javascript code highcartUsa.script.js you write something like:'))
+
+code_187.appendChild(pre_188)
+
+
+code_187.appendChild(pre_189)
+
+
+code_187.appendChild(pre_190)
+
+
+code_187.appendChild(pre_191)
+
+var div_193 = document.createElement('div')
+var img_194 = document.createElement('img')
+img_194.setAttribute('src', './img/baseline_description_black_18dp.png')
+var code_196 = document.createElement('code')
+
+div_193.appendChild(img_194)
+
+
+div_0.appendChild(code_187)
+
+
+div_0.appendChild(p_192)
+
+
+div_0.appendChild(div_193)
+
+var pre_197 = document.createElement('pre')
+pre_197.append(document.createTextNode( 'Highcharts.chart(root, {...highchart options ...})'))
+var h2_198 = document.createElement('h2')
+h2_198.append(document.createTextNode( 'How to import a component using ux lang'))
+
+code_196.appendChild(pre_197)
+
+var p_199 = document.createElement('p')
+p_199.append(document.createTextNode( 'Afterward you\'ve created your own component you can reuse the component'))
+var p_200 = document.createElement('p')
+p_200.append(document.createTextNode( 'Here an example'))
+var code_201 = document.createElement('code')
+var pre_202 = document.createElement('pre')
+pre_202.append(document.createTextNode( 'div root'))
+var pre_203 = document.createElement('pre')
+pre_203.append(document.createTextNode( '    *componentName'))
+var p_204 = document.createElement('p')
+p_204.append(document.createTextNode( 'Another example:'))
+
+code_201.appendChild(pre_202)
+
+
+code_201.appendChild(pre_203)
+
+var code_205 = document.createElement('code')
+var pre_206 = document.createElement('pre')
+pre_206.append(document.createTextNode( 'div root'))
+var pre_207 = document.createElement('pre')
+pre_207.append(document.createTextNode( '    h1 \'Tilte'))
+var pre_208 = document.createElement('pre')
+pre_208.append(document.createTextNode( '    p \'Highcharts Example with ux lang'))
+var pre_209 = document.createElement('pre')
+pre_209.append(document.createTextNode( '    *highchartUsa                //you no need use .ux extension'))
+var h2_210 = document.createElement('h2')
+h2_210.append(document.createTextNode( 'SVG example'))
+
+code_205.appendChild(pre_206)
+
+
+code_205.appendChild(pre_207)
+
+
+code_205.appendChild(pre_208)
+
+
+code_205.appendChild(pre_209)
+
+var p_211 = document.createElement('p')
+p_211.append(document.createTextNode( 'Here an example with svg. ux language is designed to work with any xml style language: html, svg, ...'))
+var code_212 = document.createElement('code')
+var pre_213 = document.createElement('pre')
+pre_213.append(document.createTextNode( 'svg root'))
+var pre_214 = document.createElement('pre')
+pre_214.append(document.createTextNode( '    -width 400px'))
+var pre_215 = document.createElement('pre')
+pre_215.append(document.createTextNode( '    -height 300px'))
+var pre_216 = document.createElement('pre')
+pre_216.append(document.createTextNode( '    -border 1px solid black'))
+var pre_217 = document.createElement('pre')
+pre_217.append(document.createTextNode( '    .viewBox 0 0 300 300'))
+var pre_218 = document.createElement('pre')
+pre_218.append(document.createTextNode( '    .onclick ev => {alert(\'hellobay\')}'))
+var pre_219 = document.createElement('pre')
+pre_219.append(document.createTextNode( '    circle'))
+var pre_220 = document.createElement('pre')
+pre_220.append(document.createTextNode( '        .class blazingStar'))
+var pre_221 = document.createElement('pre')
+pre_221.append(document.createTextNode( '        .cx 80'))
+var pre_222 = document.createElement('pre')
+pre_222.append(document.createTextNode( '        .cy 80'))
+var pre_223 = document.createElement('pre')
+pre_223.append(document.createTextNode( '        .r 30'))
+var pre_224 = document.createElement('pre')
+pre_224.append(document.createTextNode( '        .fill red'))
+var p_225 = document.createElement('p')
+p_225.append(document.createTextNode( ' You got something like this:'))
+
+code_212.appendChild(pre_213)
+
+
+code_212.appendChild(pre_214)
+
+
+code_212.appendChild(pre_215)
+
+
+code_212.appendChild(pre_216)
+
+
+code_212.appendChild(pre_217)
+
+
+code_212.appendChild(pre_218)
+
+
+code_212.appendChild(pre_219)
+
+
+code_212.appendChild(pre_220)
+
+
+code_212.appendChild(pre_221)
+
+
+code_212.appendChild(pre_222)
+
+
+code_212.appendChild(pre_223)
+
+
+code_212.appendChild(pre_224)
+
+var div_226 = document.createElement('div')
+var svg_227 = document.createElementNS('http://www.w3.org/2000/svg','svg')
+svg_227.style.width='400px'
+svg_227.style.height='300px'
+svg_227.style.border='1px solid black'
+svg_227.setAttribute('viewBox', '0 0 300 300')
+svg_227.onclick = ev => {alert('hellobay')}
+var circle_233 = document.createElementNS('http://www.w3.org/2000/svg','circle')
+circle_233.setAttribute('class', 'blazingStar')
+circle_233.setAttribute('cx', '80')
+circle_233.setAttribute('cy', '80')
+circle_233.setAttribute('r', '30')
+circle_233.setAttribute('fill', 'red')
+var h2_239 = document.createElement('h2')
+h2_239.append(document.createTextNode( 'ux lang vs markdown'))
+
+svg_227.appendChild(circle_233)
+
+
+div_226.appendChild(svg_227)
+
+
+div_0.appendChild(code_196)
+
+
+div_0.appendChild(h2_198)
+
+
+div_0.appendChild(p_199)
+
+
+div_0.appendChild(p_200)
+
+
+div_0.appendChild(code_201)
+
+
+div_0.appendChild(p_204)
+
+
+div_0.appendChild(code_205)
+
+
+div_0.appendChild(h2_210)
+
+
+div_0.appendChild(p_211)
+
+
+div_0.appendChild(code_212)
+
+
+div_0.appendChild(p_225)
+
+
+div_0.appendChild(div_226)
+
+var p_240 = document.createElement('p')
+p_240.append(document.createTextNode( 'markdown is a greate way to write for the web, ux is a little bit more complicated.'))
+var p_241 = document.createElement('p')
+p_241.append(document.createTextNode( 'ux is more powerfool regard multimediality'))
+var p_242 = document.createElement('p')
+p_242.append(document.createTextNode( 'in a ux file you can insert assets like images, other html components, etc. by means of a command given by the name of the ux component you use.'))
+var p_243 = document.createElement('p')
+p_243.append(document.createTextNode( 'for example'))
+var p_244 = document.createElement('p')
+p_244.append(document.createTextNode( '1. Create a component using the editor give by the following img'))
+var div_245 = document.createElement('div')
+var img_246 = document.createElement('img')
+img_246.setAttribute('src', './img/baseline_code_black_18dp.png')
+var p_248 = document.createElement('p')
+p_248.append(document.createTextNode( 'insert the following code:'))
+
+div_245.appendChild(img_246)
+
+
+div_0.appendChild(h2_239)
+
+
+div_0.appendChild(p_240)
+
+
+div_0.appendChild(p_241)
+
+
+div_0.appendChild(p_242)
+
+
+div_0.appendChild(p_243)
+
+
+div_0.appendChild(p_244)
+
+
+div_0.appendChild(div_245)
+
+var code_249 = document.createElement('code')
+var pre_250 = document.createElement('pre')
+pre_250.append(document.createTextNode( 'h1 \'Hello component'))
+var p_251 = document.createElement('p')
+p_251.append(document.createTextNode( 'save the component as hello.ux'))
+var p_252 = document.createElement('p')
+p_252.append(document.createTextNode( 'then come back to your blog post and write:'))
+var code_253 = document.createElement('code')
+var pre_254 = document.createElement('pre')
+pre_254.append(document.createTextNode( 'div root'))
+var pre_255 = document.createElement('pre')
+pre_255.append(document.createTextNode( '    -border 1px solid black'))
+var pre_256 = document.createElement('pre')
+pre_256.append(document.createTextNode( '    h1 \'This is my blog post'))
+var pre_257 = document.createElement('pre')
+pre_257.append(document.createTextNode( '    p \'Here the result of my component'))
+var pre_258 = document.createElement('pre')
+pre_258.append(document.createTextNode( '    *hello'))
+var p_259 = document.createElement('p')
+p_259.append(document.createTextNode( 'you got:'))
+
+code_253.appendChild(pre_254)
+
+
+code_253.appendChild(pre_255)
+
+
+code_253.appendChild(pre_256)
+
+
+code_253.appendChild(pre_257)
+
+
+code_253.appendChild(pre_258)
+
+var div_260 = document.createElement('div')
+div_260.style.border='1px solid black'
+var h1_262 = document.createElement('h1')
+h1_262.append(document.createTextNode( 'Hello component'))
+var p_263 = document.createElement('p')
+p_263.append(document.createTextNode( 'if you use the integrated editor click the preview button:'))
+
+div_260.appendChild(h1_262)
+
+var div_264 = document.createElement('div')
+var img_265 = document.createElement('img')
+img_265.setAttribute('src', './img/baseline_preview_black_18dp.png')
+var h2_267 = document.createElement('h2')
+h2_267.append(document.createTextNode( 'How to create a file and generate a download with ux lang'))
+
+div_264.appendChild(img_265)
+
+
+div_0.appendChild(p_248)
+
+
+div_0.appendChild(code_249)
+
+
+div_0.appendChild(pre_250)
+
+
+div_0.appendChild(p_251)
+
+
+div_0.appendChild(p_252)
+
+
+div_0.appendChild(code_253)
+
+
+div_0.appendChild(p_259)
+
+
+div_0.appendChild(div_260)
+
+
+div_0.appendChild(p_263)
+
+
+div_0.appendChild(div_264)
+
+var code_268 = document.createElement('code')
+var pre_269 = document.createElement('pre')
+pre_269.append(document.createTextNode( 'a \'click to download'))
+var pre_270 = document.createElement('pre')
+pre_270.append(document.createTextNode( '    .href data:text/plain;charset=utf-8,Hello content file... //encodeURIComponent(text)'))
+var pre_271 = document.createElement('pre')
+pre_271.append(document.createTextNode( '    .download sampleFileNameToDownload.txt'))
+var p_272 = document.createElement('p')
+p_272.append(document.createTextNode( 'You see something like this.'))
+
+code_268.appendChild(pre_269)
+
+
+code_268.appendChild(pre_270)
+
+
+code_268.appendChild(pre_271)
+
+
+div_0.appendChild(h2_267)
+
+
+div_0.appendChild(code_268)
+
+
+div_0.appendChild(p_272)
+
+
+div_0.setAttribute('ux-comp-name','help')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','help')
+style.textContent = ``
+div_0.appendChild(style)
+return div_0
 }
 function login() 
 {
@@ -769,9 +2128,51 @@ ctaImport.onmouseover = ev => {
 ctaImport.onmouseleave = ev => {
     ctaImport.style.background = 'initial'
 }
+
+ctaSave.onclick = ev => {
+    // Qui non siamo in WindowDev!!!!
+
+    /// Non abbiamo i riferimenti a code etc.
+
+    // opt 1 - raise event
+    document.em('windowDev.saveComponent')
+}
 root.setAttribute('ux-comp-name','menuFile')
 let style = document.createElement('style')
 style.setAttribute('ux-comp-name-css','menuFile')
+style.textContent = ``
+root.appendChild(style)
+return root
+}
+function menuProject() 
+{
+var root = document.createElement('div')
+root.style.position='fixed'
+root.style.border='1px solid white'
+root.style.background='rgb(60,57,57)'
+root.style.background='radial-gradient(circle, rgba(60,57,57,1) 0%, rgba(60,58,58,1) 100%, rgba(86,110,159,1) 100%)'
+var ctaToolbox = document.createElement('div')
+ctaToolbox.append(document.createTextNode( 'Preview'))
+ctaToolbox.style.margin='5px 5px'
+ctaToolbox.style.padding='10px'
+ctaToolbox.style.fontFamily='"Open Sans", "Courier New"'
+ctaToolbox.style.fontSize='12px'
+ctaToolbox.style.color='white'
+
+root.appendChild(ctaToolbox)
+
+ctaToolbox.onmouseover = ev => {
+    ctaToolbox.style.background = 'rgb(35,38,39)'
+    ctaToolbox.style.background = 'radial-gradient(circle, rgba(35,38,39,0.9982274159663865) 100%, rgba(235,235,235,1) 100%, rgba(86,110,159,1) 100%)'
+}
+
+ctaToolbox.onmouseleave = ev => {
+    ctaToolbox.style.background = 'initial'
+}
+
+root.setAttribute('ux-comp-name','menuProject')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','menuProject')
 style.textContent = ``
 root.appendChild(style)
 return root
@@ -783,8 +2184,18 @@ root.style.position='fixed'
 root.style.border='1px solid white'
 root.style.background='rgb(60,57,57)'
 root.style.background='radial-gradient(circle, rgba(60,57,57,1) 0%, rgba(60,58,58,1) 100%, rgba(86,110,159,1) 100%)'
+var div_5 = document.createElement('div')
+div_5.append(document.createTextNode( 'html/css intellisence'))
+div_5.style.margin='5px 5px'
+div_5.style.padding='10px'
+div_5.style.fontFamily='"Open Sans", "Courier New"'
+div_5.style.fontSize='12px'
+div_5.style.color='white'
 var ctaToolbox = document.createElement('div')
 ctaToolbox.append(document.createTextNode( 'CSS toolbox'))
+
+root.appendChild(div_5)
+
 ctaToolbox.style.margin='5px 5px'
 ctaToolbox.style.padding='10px'
 ctaToolbox.style.fontFamily='"Open Sans", "Courier New"'
@@ -800,18 +2211,38 @@ ctaDomselector.style.padding='10px'
 ctaDomselector.style.fontFamily='"Open Sans", "Courier New"'
 ctaDomselector.style.fontSize='12px'
 ctaDomselector.style.color='white'
-var div_17 = document.createElement('div')
-div_17.append(document.createTextNode( 'Show/Hide -css properties'))
+var div_23 = document.createElement('div')
+div_23.append(document.createTextNode( 'Show/Hide -css properties'))
 
 root.appendChild(ctaDomselector)
 
-div_17.style.margin='5px 5px'
-div_17.style.padding='10px'
-div_17.style.fontFamily='"Open Sans", "Courier New"'
-div_17.style.fontSize='12px'
-div_17.style.color='white'
+div_23.style.margin='5px 5px'
+div_23.style.padding='10px'
+div_23.style.fontFamily='"Open Sans", "Courier New"'
+div_23.style.fontSize='12px'
+div_23.style.color='white'
+var ctaShowEditor = document.createElement('div')
+ctaShowEditor.append(document.createTextNode( 'UX Editor'))
 
-root.appendChild(div_17)
+root.appendChild(div_23)
+
+ctaShowEditor.style.margin='5px 5px'
+ctaShowEditor.style.padding='10px'
+ctaShowEditor.style.fontFamily='"Open Sans", "Courier New"'
+ctaShowEditor.style.fontSize='12px'
+ctaShowEditor.style.color='white'
+var ctaShowHelp = document.createElement('div')
+ctaShowHelp.append(document.createTextNode( 'UX Samples'))
+
+root.appendChild(ctaShowEditor)
+
+ctaShowHelp.style.margin='5px 5px'
+ctaShowHelp.style.padding='10px'
+ctaShowHelp.style.fontFamily='"Open Sans", "Courier New"'
+ctaShowHelp.style.fontSize='12px'
+ctaShowHelp.style.color='white'
+
+root.appendChild(ctaShowHelp)
 
 ctaToolbox.onmouseover = ev => {
     ctaToolbox.style.background = 'rgb(35,38,39)'
@@ -831,9 +2262,80 @@ ctaDomselector.onmouseleave = ev => {
     ctaDomselector.style.background = 'initial'
 }
 
+ctaShowHelp.onclick = ev => {
+    document.em('app.showHelp')
+}
+
+ctaShowEditor.onclick = ev => {
+    document.em('app.showEditor')
+}
+
+
+
 root.setAttribute('ux-comp-name','menuTools')
 let style = document.createElement('style')
 style.setAttribute('ux-comp-name-css','menuTools')
+style.textContent = ``
+root.appendChild(style)
+return root
+}
+function project() 
+{
+var root = document.createElement('div')
+root.append(document.createTextNode( 'Hello Project panel'))
+root.style.position='absolute'
+root.style.backgroundColor='white'
+// PER ENTRARE E USCIRE ABBIAMO BISOGNO DI UN NUMERO DI INDICE
+
+// I DATI SONO UGUALI ALLE UI - JUST USE LOCAL VARS!!!!
+var projects = [
+    {
+        projectName: 'default project',
+        comps: [
+            {
+                fileName: 'componentName.ux',
+                ux: "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com",
+                js: "root.style.backgroundColor = 'blue'"               
+            }
+        ]
+    }
+]
+
+var comps = [
+    {
+        fileName: 'componentName.ux',
+        ux: "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com",
+        js: "root.style.backgroundColor = 'blue'"
+    },
+    {
+        fileName: 'componentName2.ux',
+        ux: "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com",
+        js: "root.style.backgroundColor = 'blue'"
+    }
+]
+
+
+// fileName.value = 'componentName.ux'
+// textareaCode.value = "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com"
+// textareaScript.value = "root.style.backgroundColor = 'blue'"
+
+// QUI POSSO DISEGNARE L'API REST CE AVEVO IMMAGINATO
+
+// IP.1 - name matching
+// satisfy all configurations
+// document.em('component', projects[0].comps[0])
+// document.register('component', evprojects[0].comps[0])
+
+// Il servizio rest restituisce un elemento e il suo indice, in generale la query per cercare l'elemento preso by indice
+
+// ARRAY INDICIZZATI DA ZERO A UNO QUINDI CHIAVI SEMPRE PRIMARIE RISPETTO AD UNA ENTITY
+
+
+
+//document.register
+root.setAttribute('ux-comp-name','project')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','project')
 style.textContent = ``
 root.appendChild(style)
 return root
@@ -929,6 +2431,66 @@ style.textContent = ``
 root.appendChild(style)
 return root
 }
+function showPublishPage() 
+{
+var root = document.createElement('div')
+var page1 = document.createElement('div')
+var h1_2 = document.createElement('h1')
+h1_2.append(document.createTextNode( 'Publish settings'))
+var form_3 = document.createElement('form')
+var input_4 = document.createElement('input')
+input_4.setAttribute('type', 'text')
+var input_6 = document.createElement('input')
+
+form_3.appendChild(input_4)
+
+input_6.setAttribute('type', 'text')
+var ctaButton = document.createElement('button')
+ctaButton.append(document.createTextNode( 'submit'))
+
+form_3.appendChild(input_6)
+
+var page2 = document.createElement('div')
+
+form_3.appendChild(ctaButton)
+
+
+page1.appendChild(h1_2)
+
+
+page1.appendChild(form_3)
+
+var h1_10 = document.createElement('h1')
+h1_10.append(document.createTextNode( 'Step 2'))
+var input_11 = document.createElement('input')
+input_11.setAttribute('type', 'text')
+input_11.setAttribute('value', 'hello')
+
+page2.appendChild(h1_10)
+
+
+page2.appendChild(input_11)
+
+
+root.appendChild(page1)
+
+
+root.appendChild(page2)
+
+page2.style.display = 'none'
+
+ctaButton.onclick = ev => {
+    ev.preventDefault()
+    page1.style.display = 'none'
+    page2.style.display = 'flex'
+}
+root.setAttribute('ux-comp-name','showPublishPage')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','showPublishPage')
+style.textContent = ``
+root.appendChild(style)
+return root
+}
 function snippets() 
 {
 var div_0 = document.createElement('div')
@@ -948,16 +2510,41 @@ style.textContent = ``
 div_0.appendChild(style)
 return div_0
 }
-function user() 
+function store() 
 {
 var root = document.createElement('div')
+store = {
+    compList: ['index', 'home', 'body'],
+    projectName: 'new',
+    thisStoreIsUsedForInitializations: 'Hello UX web lib'
+}
+
+
+
+root.setAttribute('ux-comp-name','store')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','store')
+style.textContent = ``
+root.appendChild(style)
+return root
+}
+function user() 
+{
+var div_0 = document.createElement('div')
 var ctaUser = document.createElement('img')
-ctaUser.style.marginRight='20px'
-ctaUser.style.cursor='pointer'
-ctaUser.setAttribute('src', './img/baseline_person_outline_white_18dp.png')
+ctaUser.style.margin='0px 0px 0px 10px'
+ctaUser.style.padding='0px'
+ctaUser.style.fontFamily='"Open Sans", "Courier New"'
+ctaUser.style.fontSize='12px'
+ctaUser.style.color='white'
+ctaUser.style.borderRadius='50%'
+ctaUser.style.width='30px'
+ctaUser.style.height='30px'
+ctaUser.setAttribute('move', 'window')
+ctaUser.setAttribute('src', 'https://secure.meetupstatic.com/photos/member/9/2/2/a/highres_306217418.jpeg')
 var mnuUser = document.createElement('div')
 
-root.appendChild(ctaUser)
+div_0.appendChild(ctaUser)
 
 mnuUser.style.display='none'
 mnuUser.style.position='fixed'
@@ -985,15 +2572,15 @@ mnuGuest.style.position='fixed'
 mnuGuest.style.border='1px solid black'
 mnuGuest.style.backgroundColor='white'
 mnuGuest.style.zIndex='101'
-var login_20 = login()
+var login_27 = login()
 
-mnuGuest.appendChild(login_20)
-
-
-root.appendChild(mnuUser)
+mnuGuest.appendChild(login_27)
 
 
-root.appendChild(mnuGuest)
+div_0.appendChild(mnuUser)
+
+
+div_0.appendChild(mnuGuest)
 
 // **************** MENU USER
 var isMouseOver = false
@@ -1014,7 +2601,8 @@ ctaUser.onclick = ev => {
         mnuUser.style.display = 'initial'
 
         var rectMnu = mnuUser.getBoundingClientRect()
-        mnuUser.style.left= rect.right - rectMnu.right + rectMnu.left + 'px'
+        //mnuUser.style.left= rect.right - rectMnu.right + rectMnu.left + 'px'
+        mnuUser.style.left = rect.left;
     } else {
         mnuUser.style.display = 'none'
     }
@@ -1029,12 +2617,12 @@ ctaSignout.onclick = ev => {
     document.cookie = 'pass=foo'
     mnuUser.style.display = 'none'
 }
-root.setAttribute('ux-comp-name','user')
+div_0.setAttribute('ux-comp-name','user')
 let style = document.createElement('style')
 style.setAttribute('ux-comp-name-css','user')
 style.textContent = ``
-root.appendChild(style)
-return root
+div_0.appendChild(style)
+return div_0
 }
 function windowDev() 
 {
@@ -1056,19 +2644,10 @@ topBar.style.background='rgb(60,57,57)'
 topBar.style.background='radial-gradient(circle, rgba(60,57,57,1) 0%, rgba(60,58,58,1) 100%, rgba(86,110,159,1) 100%)'
 var div_16 = document.createElement('div')
 div_16.style.display='flex'
-var windowImgMove = document.createElement('span')
-windowImgMove.append(document.createTextNode( '*'))
-windowImgMove.style.margin='5px 5px'
-windowImgMove.style.padding='10px'
-windowImgMove.style.fontFamily='"Open Sans", "Courier New"'
-windowImgMove.style.fontSize='12px'
-windowImgMove.style.color='white'
-windowImgMove.setAttribute('move', 'window')
+div_16.style.alignItems='center'
+var windowImgMove = user()
 var ctaFile = document.createElement('span')
 ctaFile.append(document.createTextNode( 'File'))
-
-div_16.appendChild(windowImgMove)
-
 ctaFile.style.margin='5px 5px'
 ctaFile.style.padding='10px'
 ctaFile.style.fontFamily='"Open Sans", "Courier New"'
@@ -1099,6 +2678,9 @@ imgCode.style.color='white'
 imgCode.style.background='green'
 var imgScript = document.createElement('span')
 imgScript.append(document.createTextNode( '{js}'))
+
+div_16.appendChild(windowImgMove)
+
 
 div_16.appendChild(ctaFile)
 
@@ -1135,22 +2717,10 @@ imgSaveAlt.style.fontSize='12px'
 imgSaveAlt.style.color='white'
 imgSaveAlt.style.background='orange'
 imgSaveAlt.style.cursor='pointer'
-var imgDesign = document.createElement('span')
-imgDesign.append(document.createTextNode( 'Design'))
-
-div_16.appendChild(imgSaveAlt)
-
-imgDesign.style.margin='5px 5px'
-imgDesign.style.padding='10px'
-imgDesign.style.fontFamily='"Open Sans", "Courier New"'
-imgDesign.style.fontSize='12px'
-imgDesign.style.color='white'
-imgDesign.style.background='orange'
-imgDesign.style.cursor='pointer'
 var imgPreview = document.createElement('span')
 imgPreview.append(document.createTextNode( 'Preview'))
 
-div_16.appendChild(imgDesign)
+div_16.appendChild(imgSaveAlt)
 
 imgPreview.style.margin='5px 5px'
 imgPreview.style.padding='10px'
@@ -1159,15 +2729,15 @@ imgPreview.style.fontSize='12px'
 imgPreview.style.color='white'
 imgPreview.style.background='orange'
 imgPreview.style.cursor='pointer'
-var div_82 = document.createElement('div')
+var div_69 = document.createElement('div')
 
 div_16.appendChild(imgPreview)
 
 
 topBar.appendChild(div_16)
 
-div_82.style.display='flex'
-div_82.style.flexGrow='1'
+div_69.style.display='flex'
+div_69.style.flexGrow='1'
 var fileName = document.createElement('input')
 fileName.style.width='100%'
 fileName.style.height='30px'
@@ -1175,40 +2745,43 @@ fileName.style.marginLeft='10px'
 fileName.style.marginRight='10px'
 fileName.style.fontSize='large'
 fileName.setAttribute('type', 'text')
-fileName.setAttribute('value', 'componentName.ux')
-var div_93 = document.createElement('div')
+fileName.setAttribute('value', 'undefined')
+var panelPrj = project()
 
-div_82.appendChild(fileName)
+div_69.appendChild(fileName)
 
-
-topBar.appendChild(div_82)
-
-div_93.style.display='flex'
 var imgDownload = document.createElement('span')
-imgDownload.append(document.createTextNode( 'Download'))
+imgDownload.append(document.createTextNode( 'Publish'))
+
+div_69.appendChild(panelPrj)
+
 imgDownload.style.margin='5px 5px'
 imgDownload.style.padding='10px'
 imgDownload.style.fontFamily='"Open Sans", "Courier New"'
 imgDownload.style.fontSize='12px'
 imgDownload.style.color='white'
-var windowImgMaximize = document.createElement('img')
+var windowImgMaximize = document.createElement('span')
+windowImgMaximize.append(document.createTextNode( 'maximize'))
 
-div_93.appendChild(imgDownload)
+topBar.appendChild(div_69)
 
+
+topBar.appendChild(imgDownload)
+
+windowImgMaximize.style.color='white'
 windowImgMaximize.style.cursor='pointer'
-windowImgMaximize.setAttribute('src', './img/baseline_aspect_ratio_black_18dp.png')
-var windowImgClose = document.createElement('img')
+windowImgMaximize.setAttribute('class', 'material-icons')
+var windowImgClose = document.createElement('span')
+windowImgClose.append(document.createTextNode( 'close'))
 
-div_93.appendChild(windowImgMaximize)
+topBar.appendChild(windowImgMaximize)
 
 windowImgClose.style.cursor='pointer'
-windowImgClose.setAttribute('src', './img/baseline_highlight_off_black_18dp.png')
+windowImgClose.style.color='white'
+windowImgClose.setAttribute('class', 'material-icons')
 var contentArea = document.createElement('div')
 
-div_93.appendChild(windowImgClose)
-
-
-topBar.appendChild(div_93)
+topBar.appendChild(windowImgClose)
 
 
 root.appendChild(topBar)
@@ -1383,7 +2956,12 @@ ctaTools.onmouseleave = ev => {
 }
 // *************************************
 
-
+windowImgMaximize.onclick = ev => {
+    root.style.left = '0px';
+    root.style.top = '0px';
+    root.style.width = document.body.clientWidth + 'px';
+    root.style.height = document.body.clientHeight + 'px';
+}
 
 windowImgClose.onmouseover = ev => {
     windowImgClose.style.filter = 'saturate(8)';
@@ -1391,13 +2969,6 @@ windowImgClose.onmouseover = ev => {
 
 windowImgClose.onclick = ev => {
     root.style.display = 'none';
-}
-
-windowImgMaximize.onclick = ev => {
-    root.style.left = '0px';
-    root.style.top = '0px';
-    root.style.width = document.body.clientWidth + 'px';
-    root.style.height = document.body.clientHeight + 'px';
 }
 
 imgCode.onclick = ev => {
@@ -1447,8 +3018,24 @@ imgPreview.onclick = ev => {
     count++
     codeArea.style.display = 'none'
     
-    var code =document.parser('functionName', textareaCode.value, textareaScript.value, textareaCss.value)
-/*     var script = document.createElement('script')
+    // var code =document.parser('functionName', textareaCode.value, textareaScript.value, textareaCss.value)
+
+
+    var code = ux.parserJSFunction('functionName',textareaCode.value, textareaScript.value, textareaCss.value);
+
+
+    var script = document.createElement('script')
+    script.append(document.createTextNode(code))
+    document.body.append(script)
+    
+
+    contentArea.style.display = 'flex'
+    contentArea.innerHTML = ''
+    contentArea.append(functionName())
+
+
+
+    /*     var script = document.createElement('script')
     script.append(document.createTextNode(code)) */
 
     // DA OTTIMIZZARE ATTACCA UNO SCRIPT PER OGNI COMPILAZIONE
@@ -1457,45 +3044,26 @@ imgPreview.onclick = ev => {
     //document.register('saveGenScript' ev => {
     //    alert(ev.detail)
     //})
-    
-    document.json('saveGenScript', {fileName: fileName.value, code:code}).then(data=>{
-        console.log('saved.')
-        //scriptArea.innerHTML = ''
-        //scriptArea.append(document.createTextNode(code))
-        
-        var fileToImport = fileName.value.substr(0,fileName.value.length-3)
-        import('./'+fileToImport+'.js?'+count).then(module => {
-            var dom = module.default()
-            contentArea.style.display = 'flex'
-            contentArea.innerHTML = ''
-            contentArea.append(dom)
-        })
-    })
 
-/* fetch('/saveGenScript', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        mode: 'same-origin', 
-        cache: 'no-cache', 
-        body: JSON.stringify({fileName: fileName.value, code: code})
-    }).then(res => {
-        console.log('saved.')
-        //scriptArea.innerHTML = ''
-        //scriptArea.append(document.createTextNode(code))
-        
-        var fileToImport = fileName.value.substr(0,fileName.value.length-3)
-        import('./'+fileToImport+'.js?'+count).then(module => {
-            var dom = module.default()
-            contentArea.style.display = 'flex'
-            contentArea.innerHTML = ''
-            contentArea.append(dom)
-        })
-    }) */
 
 
 
 
     //document.eventManager('windowDev.imgPreviewClicked', {fileName: "test.ux", code: textareaCode.value})
+}
+
+panelPrj.style.display = 'none'
+
+fileName.onclick = ev => {
+    // show/hide project component
+    if(panelPrj.style.display == 'none'){
+        panelPrj.style.display = 'flex'
+        var rect = fileName.getBoundingClientRect();
+        panelPrj.left = rect.x + 'px';
+        panelPrj.top = rect.bottom+'px';
+    } else {
+        panelPrj.style.display = 'none'
+    }
 }
 
 imgSaveAlt.onhover = ev => {
@@ -1627,6 +3195,11 @@ document.registerDefault(updateContent)
 document.register('showFile', ev=>{
     count++
 
+    // compSource.read()
+    // 
+    // fileName.value = ev.detail.fileName
+
+
     document.json('file', {fileName:ev.detail.fileName}).then(data=>{
         textareaCode.value = data.code
         textareaScript.value = data.scriptCode
@@ -1639,28 +3212,13 @@ document.register('showFile', ev=>{
             contentArea.innerHTML = ''
             contentArea.append(dom)
             root.style.display = 'flex'
-        })        
-    })
+        })  
+        
+        component.get()
 
-/*     fetch('/file', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({fileName: ev.detail.fileName})
-      }).then(res=>{
-        return res.json()
-    }).then(data=>{
-        textareaCode.value = data.code
-        textareaScript.value = data.scriptCode
-        fileName.value = ev.detail.fileName
-        
-        var fileToImport = fileName.value.substr(0,fileName.value.length-3)
-        import('./'+fileToImport+'.js?'+count).then(module => {
-            var dom = module.default()
-            contentArea.innerHTML = ''
-            contentArea.append(dom)
-        })
-        
-    }) */
+        contentArea.innerHTML = ''
+        contentArea.append(preview)
+    })
 })
 
 document.register('windowDev.textareaCode.append', ev => {
@@ -1669,51 +3227,41 @@ document.register('windowDev.textareaCode.append', ev => {
     textareaCss.value = textareaCss.value + '\n' + riga
 })
 
-
-imgDesign.onclick = ev => {
-    // Per ogni elemento mouseonover
-    // Cambio i bordi
-    var stack = []
-
-    
-    stack.push(contentArea.children)
-
-    while(stack.length!=0){
-        var ch = stack.pop()
-
-        Array.from(ch).forEach( v => {
-            if(v.nodeType==1){
-                v.onmouseover = ev => {
-                    ev.target.style.border = '2px solid orange'
-                }
-                v.onmouseout = ev => {
-                    ev.target.style.border = 'initial'
-                }
-                v.onclick = ev => {
-                    ev.preventDefault()
-                    ev.stopPropagation()
-                    //Invio il dom alla paletta
-                    document.em('paletta', {dom:ev.target})
-                }
-                stack.push(v.children)
-            }
-            
-        })
-    }
-    // Per ogni elemento onclick
-}
-
 imgDownload.onclick = ev => {
-    // Genero il file da scaricare 
-
-    // faccio partire il download
-    alert('Work in progress')
+    document.em('homeDesktop.showPublishPage')
 }
 
 
-textareaCode.value = "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com"
+// TODO - HERE FOR TESTING DX LANG
+//function fakecomesempre (){}
+document.register('windowDev.saveComponent', ev => {
+    //component.someProp = ev.details.overrideVal
+    //fakecomesempre(component)
+    //updateOrCreate(component) // alias save()
+})
 
-textareaScript.value = "root.style.backgroundColor = 'blue'"
+
+// DATA INIZIALITATION
+// component.forEach()
+
+
+
+// COMPONENT DTO
+// read ma da dove!!!!!!!
+// document.em('project[0].read()')
+// fileName.value = component.fileName  || projects.comps[0].fileName
+// textareaCode.value = component.ux
+// textareaScript.value = component.js
+
+// read(component) ==>
+
+// document.em('component')
+
+// read_component()
+
+// fileName.value = 'componentName.ux'
+// textareaCode.value = "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com"
+// textareaScript.value = "root.style.backgroundColor = 'blue'"
 
 
 
