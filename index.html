@@ -1,9 +1,12 @@
 <html><head></head><body>
 <script>
+var store = {};
 window.addEventListener('DOMContentLoaded', (event) => {
     document.head.appendChild(head());
     window.onload = () => {
         document.body.appendChild(body());
+        store = JSON.parse(document.getElementById('ux-local-store').innerHTML);
+        document.getElementById('ux-local-store').innerHTML = '';
     }
 });
 </script>
@@ -11,7 +14,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
 <div id="ux-post-post"># Hello ux-md
 Bla bla bla</div></div>
 <div id="ux-local-store" style="display:none">
+{}
 </div>
+<div id="ux-source-code" style="display:none">
+</div>
+<script id="ux-assets-script"></script>
+<style id="ux-assets-css"></style>
 <script>function accordion() 
 {
 var root = document.createElement('div')
@@ -507,40 +515,6 @@ style.textContent = ``
 body.appendChild(style)
 return body
 }
-function downloadApp() 
-{
-var root = document.createElement('div')
-var h1_1 = document.createElement('h1')
-h1_1.append(document.createTextNode( 'Hello World'))
-var ctaDownload = document.createElement('button')
-ctaDownload.append(document.createTextNode( 'Download Project'))
-var a_3 = document.createElement('a')
-a_3.append(document.createTextNode( 'click to download'))
-a_3.setAttribute('href', 'data:text/plain;charset=utf-8,Hello content file... //encodeURIComponent(text)')
-a_3.setAttribute('download', 'sampleFileNameToDownload.txt')
-
-root.appendChild(h1_1)
-
-
-root.appendChild(ctaDownload)
-
-
-root.appendChild(a_3)
-
-ctaDownload.onclick = ev => {
-    //var storeDom = document.getElementById('ux-local-store')
-    //storeDom.innerHTML = `CONTENT HERE ...`
-    //download entirePage    
-}
-
-
-root.setAttribute('ux-comp-name','downloadApp')
-let style = document.createElement('style')
-style.setAttribute('ux-comp-name-css','downloadApp')
-style.textContent = ``
-root.appendChild(style)
-return root
-}
 function eventConf() 
 {
 var root = document.createElement('div')
@@ -629,13 +603,13 @@ var link_23 = document.createElement('link')
 
 head.appendChild(link_18)
 
-link_23.setAttribute('href', '../assets/css/ux.css')
+link_23.setAttribute('href', '/assets/css/ux.css')
 link_23.setAttribute('rel', 'stylesheet')
 var link_26 = document.createElement('link')
 
 head.appendChild(link_23)
 
-link_26.setAttribute('href', '../assets/css/style.css')
+link_26.setAttribute('href', '/assets/css/style.css')
 link_26.setAttribute('rel', 'stylesheet')
 var script_29 = document.createElement('script')
 
@@ -692,12 +666,12 @@ var script_53 = document.createElement('script')
 
 head.appendChild(script_49)
 
-script_53.setAttribute('src', '../assets/js/ux.js')
+script_53.setAttribute('src', '/assets/js/ux.js')
 var script_55 = document.createElement('script')
 
 head.appendChild(script_53)
 
-script_55.setAttribute('src', '../assets/js/ux-lang.js')
+script_55.setAttribute('src', '/assets/js/ux-lang.js')
 var script_57 = document.createElement('script')
 
 head.appendChild(script_55)
@@ -2090,8 +2064,19 @@ ctaImport.style.padding='10px'
 ctaImport.style.fontFamily='"Open Sans", "Courier New"'
 ctaImport.style.fontSize='12px'
 ctaImport.style.color='white'
+var ctaDownload = document.createElement('div')
+ctaDownload.append(document.createTextNode( 'download html app'))
 
 root.appendChild(ctaImport)
+
+ctaDownload.style.margin='5px 5px'
+ctaDownload.style.padding='10px'
+ctaDownload.style.fontFamily='"Open Sans", "Courier New"'
+ctaDownload.style.fontSize='12px'
+ctaDownload.style.color='white'
+ctaDownload.style.cursor='pointer'
+
+root.appendChild(ctaDownload)
 
 ctaNew.onmouseover = ev => {
     ctaNew.style.background = 'rgb(35,38,39)'
@@ -2136,6 +2121,39 @@ ctaSave.onclick = ev => {
 
     // opt 1 - raise event
     document.em('windowDev.saveComponent')
+}
+
+ctaDownload.onclick = ev => {
+    fetch('/').then(function (response) {
+        // The API call was successful!
+        return response.text();
+    }).then(function (html) {
+    
+        // Convert the HTML string into a document object
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, 'text/html');
+        var ux_store = doc.getElementById('ux-local-store');
+        var ux_assets_js = doc.getElementById('ux-assets-script')
+        var ux_assets_css = doc.getElementById('ux-assets-css')
+        
+        // STORE IS A GLOBAL VARIABLE
+        ux_store.innerHTML = JSON.stringify(store)
+        
+
+        // CAPIAMO COME LEGGERE GLI ASSETS
+        // docum
+        var links = doc.body.getElementsByTagName('link');
+        var scripts = doc.body.getElementsByTagName('link');
+
+
+        var a = document.createElement("a")
+        a.download = "file.html"
+        a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(doc.documentElement.outerHTML)
+        a.click()
+    }).catch(function (err) {
+        // There was an error
+        console.warn('Something went wrong.', err);
+    });
 }
 root.setAttribute('ux-comp-name','menuFile')
 let style = document.createElement('style')
@@ -2343,9 +2361,7 @@ return root
 function restConf() 
 {
 var root = document.createElement('div')
-function json(serviceName, msg={}, mode='cors'){
-    const host = 'http://localhost:3000/';
-
+function json(serviceName, msg){
     return new Promise( (resolve, reject) => {
         // prendo i cookie
         // document.cookie = "user=admin@katecode.com;pass=admin"
@@ -2353,7 +2369,7 @@ function json(serviceName, msg={}, mode='cors'){
         //document.cookie = "user=admin@katecode.com;pass=admin"
         //document.cookie = "pass=admi"
         
-        // *************** Vanilla cookie
+
         var props = document.cookie.split(';')
 
         var user = ''
@@ -2368,21 +2384,12 @@ function json(serviceName, msg={}, mode='cors'){
             pass = tokens[1]
           }
         })
-        //********************************
-        
-        // npm js-cookie
-        //Cookies.set('user','root')
-        //Cookies.set('pass','root')
-        
-      
-
-        fetch(host+serviceName, {
-            mode: mode, //same-origin
-            method: 'POST', 
+        fetch('/json', {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+              'Content-Type': 'application/json'
             },
-            body: JSON.stringify(msg) // body data type must match "Content-Type" header
+            body: JSON.stringify({meta: {serviceName:serviceName, user:user,pass:pass}, data:msg}) // body data type must match "Content-Type" header
         }).then( response => {
             return response.json()
         }).then(data => {
@@ -2393,7 +2400,6 @@ function json(serviceName, msg={}, mode='cors'){
             reject(error)
         });
     })
-
 }
 
 document.json = json;
@@ -2510,27 +2516,10 @@ style.textContent = ``
 div_0.appendChild(style)
 return div_0
 }
-function store() 
-{
-var root = document.createElement('div')
-store = {
-    compList: ['index', 'home', 'body'],
-    projectName: 'new',
-    thisStoreIsUsedForInitializations: 'Hello UX web lib'
-}
-
-
-
-root.setAttribute('ux-comp-name','store')
-let style = document.createElement('style')
-style.setAttribute('ux-comp-name-css','store')
-style.textContent = ``
-root.appendChild(style)
-return root
-}
 function user() 
 {
 var div_0 = document.createElement('div')
+div_0.style.display='flex'
 var ctaUser = document.createElement('img')
 ctaUser.style.margin='0px 0px 0px 10px'
 ctaUser.style.padding='0px'
@@ -2547,37 +2536,40 @@ var mnuUser = document.createElement('div')
 div_0.appendChild(ctaUser)
 
 mnuUser.style.display='none'
-mnuUser.style.position='fixed'
 mnuUser.style.border='1px solid black'
 mnuUser.style.backgroundColor='white'
-mnuUser.style.zIndex='101'
-var user = document.createElement('h3')
-user.append(document.createTextNode( 'Username'))
-var mail = document.createElement('p')
-mail.append(document.createTextNode( 'user@mail.com'))
-var ctaSignout = document.createElement('button')
-ctaSignout.append(document.createTextNode( 'Sign out'))
-var mnuGuest = document.createElement('div')
+var username = document.createElement('input')
+username.setAttribute('type', 'text')
+username.setAttribute('class', 'form-control')
+username.setAttribute('placeholder', 'username')
+var mail = document.createElement('input')
 
-mnuUser.appendChild(user)
+mnuUser.appendChild(username)
 
+mail.setAttribute('type', 'text')
+mail.setAttribute('class', 'form-control')
+mail.setAttribute('placeholder', 'your@mail.com')
+var ctaSignin = document.createElement('button')
+ctaSignin.append(document.createTextNode( 'Join'))
 
 mnuUser.appendChild(mail)
 
+ctaSignin.setAttribute('class', 'btn btn-primary')
+var mnuGuest = document.createElement('div')
 
-mnuUser.appendChild(ctaSignout)
+mnuUser.appendChild(ctaSignin)
+
+
+div_0.appendChild(mnuUser)
 
 mnuGuest.style.display='none'
 mnuGuest.style.position='fixed'
 mnuGuest.style.border='1px solid black'
 mnuGuest.style.backgroundColor='white'
 mnuGuest.style.zIndex='101'
-var login_27 = login()
+var login_33 = login()
 
-mnuGuest.appendChild(login_27)
-
-
-div_0.appendChild(mnuUser)
+mnuGuest.appendChild(login_33)
 
 
 div_0.appendChild(mnuGuest)
@@ -2598,7 +2590,7 @@ ctaUser.onclick = ev => {
 
         mnuUser.style.padding = '10px'
         mnuUser.style.position = 'fixed'
-        mnuUser.style.display = 'initial'
+        mnuUser.style.display = 'flex'
 
         var rectMnu = mnuUser.getBoundingClientRect()
         //mnuUser.style.left= rect.right - rectMnu.right + rectMnu.left + 'px'
@@ -2608,15 +2600,33 @@ ctaUser.onclick = ev => {
     }
 }
 
+username.onclick = ev => {
+    username.focus()
+}
 
+mail.onclick = ev => {
+    mail.focus()
+}
 
 // **********************************************
 
-ctaSignout.onclick = ev => {
+ctaSignin.onclick = ev => {
     document.cookie = 'user=foo'
     document.cookie = 'pass=foo'
     mnuUser.style.display = 'none'
+
+    store.user = {
+        username: username.value,
+        mail: mail.value
+    }
+
+    // BACK END SERVICE FOR SAVING EMAIL
+    // NODE MAIL ER
+    document.json('savemail',store.user)
 }
+
+
+//window.open('mailto:test@example.com?subject=subject&body=body');
 div_0.setAttribute('ux-comp-name','user')
 let style = document.createElement('style')
 style.setAttribute('ux-comp-name-css','user')
@@ -2634,7 +2644,6 @@ root.style.height='580px'
 root.style.flexDirection='column'
 root.style.border='3px solid black'
 root.style.overflow='none'
-root.style.zIndex='100'
 root.style.boxSizing='border-box'
 var topBar = document.createElement('div')
 topBar.style.display='flex'
@@ -2642,9 +2651,9 @@ topBar.style.justifyContent='space-between'
 topBar.style.alignItems='center'
 topBar.style.background='rgb(60,57,57)'
 topBar.style.background='radial-gradient(circle, rgba(60,57,57,1) 0%, rgba(60,58,58,1) 100%, rgba(86,110,159,1) 100%)'
-var div_16 = document.createElement('div')
-div_16.style.display='flex'
-div_16.style.alignItems='center'
+var div_15 = document.createElement('div')
+div_15.style.display='flex'
+div_15.style.alignItems='center'
 var windowImgMove = user()
 var ctaFile = document.createElement('span')
 ctaFile.append(document.createTextNode( 'File'))
@@ -2679,16 +2688,16 @@ imgCode.style.background='green'
 var imgScript = document.createElement('span')
 imgScript.append(document.createTextNode( '{js}'))
 
-div_16.appendChild(windowImgMove)
+div_15.appendChild(windowImgMove)
 
 
-div_16.appendChild(ctaFile)
+div_15.appendChild(ctaFile)
 
 
-div_16.appendChild(ctaTools)
+div_15.appendChild(ctaTools)
 
 
-div_16.appendChild(imgCode)
+div_15.appendChild(imgCode)
 
 imgScript.style.margin='5px 5px'
 imgScript.style.padding='10px'
@@ -2698,29 +2707,37 @@ imgScript.style.color='white'
 var imgCss = document.createElement('span')
 imgCss.append(document.createTextNode( '{css}'))
 
-div_16.appendChild(imgScript)
+div_15.appendChild(imgScript)
 
 imgCss.style.margin='5px 5px'
 imgCss.style.padding='10px'
 imgCss.style.fontFamily='"Open Sans", "Courier New"'
 imgCss.style.fontSize='12px'
 imgCss.style.color='white'
-var imgSaveAlt = document.createElement('span')
-imgSaveAlt.append(document.createTextNode( 'Save'))
+var span_52 = document.createElement('span')
+span_52.append(document.createTextNode( '{node js}'))
 
-div_16.appendChild(imgCss)
+div_15.appendChild(imgCss)
 
-imgSaveAlt.style.margin='5px 5px'
-imgSaveAlt.style.padding='10px'
-imgSaveAlt.style.fontFamily='"Open Sans", "Courier New"'
-imgSaveAlt.style.fontSize='12px'
-imgSaveAlt.style.color='white'
-imgSaveAlt.style.background='orange'
-imgSaveAlt.style.cursor='pointer'
+span_52.style.margin='5px 5px'
+span_52.style.padding='10px'
+span_52.style.fontFamily='"Open Sans", "Courier New"'
+span_52.style.fontSize='12px'
+span_52.style.color='white'
+var span_58 = document.createElement('span')
+span_58.append(document.createTextNode( '{python}'))
+
+div_15.appendChild(span_52)
+
+span_58.style.margin='5px 5px'
+span_58.style.padding='10px'
+span_58.style.fontFamily='"Open Sans", "Courier New"'
+span_58.style.fontSize='12px'
+span_58.style.color='white'
 var imgPreview = document.createElement('span')
 imgPreview.append(document.createTextNode( 'Preview'))
 
-div_16.appendChild(imgSaveAlt)
+div_15.appendChild(span_58)
 
 imgPreview.style.margin='5px 5px'
 imgPreview.style.padding='10px'
@@ -2729,15 +2746,15 @@ imgPreview.style.fontSize='12px'
 imgPreview.style.color='white'
 imgPreview.style.background='orange'
 imgPreview.style.cursor='pointer'
-var div_69 = document.createElement('div')
+var div_72 = document.createElement('div')
 
-div_16.appendChild(imgPreview)
+div_15.appendChild(imgPreview)
 
 
-topBar.appendChild(div_16)
+topBar.appendChild(div_15)
 
-div_69.style.display='flex'
-div_69.style.flexGrow='1'
+div_72.style.display='flex'
+div_72.style.flexGrow='1'
 var fileName = document.createElement('input')
 fileName.style.width='100%'
 fileName.style.height='30px'
@@ -2748,31 +2765,21 @@ fileName.setAttribute('type', 'text')
 fileName.setAttribute('value', 'undefined')
 var panelPrj = project()
 
-div_69.appendChild(fileName)
+div_72.appendChild(fileName)
 
-var imgDownload = document.createElement('span')
-imgDownload.append(document.createTextNode( 'Publish'))
-
-div_69.appendChild(panelPrj)
-
-imgDownload.style.margin='5px 5px'
-imgDownload.style.padding='10px'
-imgDownload.style.fontFamily='"Open Sans", "Courier New"'
-imgDownload.style.fontSize='12px'
-imgDownload.style.color='white'
 var windowImgMaximize = document.createElement('span')
 windowImgMaximize.append(document.createTextNode( 'maximize'))
 
-topBar.appendChild(div_69)
-
-
-topBar.appendChild(imgDownload)
+div_72.appendChild(panelPrj)
 
 windowImgMaximize.style.color='white'
 windowImgMaximize.style.cursor='pointer'
 windowImgMaximize.setAttribute('class', 'material-icons')
 var windowImgClose = document.createElement('span')
 windowImgClose.append(document.createTextNode( 'close'))
+
+topBar.appendChild(div_72)
+
 
 topBar.appendChild(windowImgMaximize)
 
@@ -3066,39 +3073,7 @@ fileName.onclick = ev => {
     }
 }
 
-imgSaveAlt.onhover = ev => {
-    
-}
 
-imgSaveAlt.onclick = ev => {
-    imgSaveAlt.style.backgroundColor = 'red'
-
-    document.json('commitStore',document.store).then(data=> console.log('store saved - ' + JSON.stringify(data)) )
-
-    document.json('saveAs', {fileName:fileName.value, code:textareaCode.value, scriptCode:textareaScript.value, cssCode:textareaCss.value}).then(data=>{
-        console.log('saved')
-        if(data.esito=='done'){
-            //TOOLTIP SAVED
-        } else if (data.esito=='login'){
-            document.em('accordion.showRegister')
-        }
-        else {
-            //login
-            //Home Desktop deve allegare la window di login
-            //document.em('homeDesktop.showLogin')
-        }
-    })
-
-/*     fetch('/saveAs', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        mode: 'same-origin', 
-        cache: 'no-cache', 
-        body: JSON.stringify({fileName: fileName.value, code: textareaCode.value, scriptCode: textareaScript.value})
-    }).then(res => {
-        console.log('saved.')
-    }) */
-}
 
 function makeResizableDiv(div, resizer) {
     const element = div;
@@ -3226,10 +3201,6 @@ document.register('windowDev.textareaCode.append', ev => {
     var riga = ev.detail.varName + '.style.' + ev.detail.propertyName + ' = ' + "'" + ev.detail.propertyValue + "'"
     textareaCss.value = textareaCss.value + '\n' + riga
 })
-
-imgDownload.onclick = ev => {
-    document.em('homeDesktop.showPublishPage')
-}
 
 
 // TODO - HERE FOR TESTING DX LANG

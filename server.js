@@ -22,7 +22,8 @@ app.get('/', (req, res)=> {
     res.sendFile(path.join(`${__dirname}/dist/index.html`));
 } )
 
-global.store = {id:0}
+global.store = {}
+global.store.users = []
 
 app.get('/globalvar', (req, res)=> {
     store.id = store.id+1
@@ -31,8 +32,8 @@ app.get('/globalvar', (req, res)=> {
 
 app.post('/json', (req, res, next)=>{
 
-    var usr = req.body.meta.user
-    var pass = req.body.meta.pass
+    var usr = 'root'
+    var pass = 'root'
 
     console.log('usr - ' + usr + ' - ' + pass)
 
