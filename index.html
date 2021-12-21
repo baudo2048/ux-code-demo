@@ -2693,6 +2693,7 @@ ctaSignin.onclick = ev => {
     // BACK END SERVICE FOR SAVING EMAIL
     // NODE MAIL ER
     document.json('savemail',store.user)
+    document.em('windowDev.connectSocket')
 }
 
 
@@ -3499,6 +3500,7 @@ textareaCss.addEventListener('keyup', textareaCssKeyup)
 // ***************
 
 //document.register('ux.socket.started', ev => {
+document.register('windowDev.connectSocket', ev => {
     ctaFile.click();
     imgCode.click();
     imgScript.click();
@@ -3509,6 +3511,8 @@ textareaCss.addEventListener('keyup', textareaCssKeyup)
     //ctaFile.dispatchEvent(new Event('mouseleave'))
     textareaScript.dispatchEvent(new Event('keyup'))
     textareaCss.dispatchEvent(new Event('keyup'))
+})
+
 
     //ctaFileListener()
 
