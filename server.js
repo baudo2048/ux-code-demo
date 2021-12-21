@@ -70,7 +70,7 @@ app.get('/json', (req, res, next)=>{
 
 })
 
-app.ws('/sock', function(ws, req) {
+app.ws('/', function(ws, req) {
     //console.log('Called every time a message or event (open, etc.) occur')
     ws.on('open', function(){
         //ws.send('something');        

@@ -582,7 +582,7 @@ var root = document.createElement('div')
 
    // *****************
 // *** SOCKET CONF
-var sockHost = location.origin.replace(/^http/, 'ws') + '/sock' //'ws://katecode.herokuapp.com/sock'
+var sockHost = location.origin.replace(/^http/, 'ws') //'ws://katecode.herokuapp.com/sock'
 var ws = new WebSocket(sockHost)
 ws.onopen = event => {
     //ws.send('ux.app.session.start') 
@@ -3301,7 +3301,7 @@ document.register('windowDev.saveCurrentComponent', ev => {
 
 */
 
-var sockHost = location.origin.replace(/^http/, 'ws') + '/sock' //'ws://katecode.herokuapp.com/sock'
+var sockHost = location.origin.replace(/^http/, 'ws') //'ws://katecode.herokuapp.com/sock'
 
 // ********** FOR EACH COMPONENT FOR EACH EVENT
 
