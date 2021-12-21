@@ -22,8 +22,16 @@ app.get('/', (req, res)=> {
     res.sendFile(path.join(`${__dirname}/dist/index.html`));
 } )
 
+// STORE DTO STRUCTURE - INITIAL STATUS
 global.store = {}
 global.store.users = []
+global.store.Project = [{}]
+global.store.Project[0].Service = []
+
+//eval (global.store.Project[0].Service[0].code)
+//console.log('AFTER EVAL: ' + global.store.testVar)
+
+
 
 app.get('/globalvar', (req, res)=> {
     store.id = store.id+1
@@ -80,11 +88,24 @@ app.ws('/', function(ws, req) {
 
     ws.on('message', function(msg) {
         expressWs.getWss().clients.forEach(function each(client) {
-            client.send(JSON.stringify({m:msg}));
+            if(client !== ws ) { 
+                client.send(msg);
+            }
         })
       //console.log(msg);
       //ws.send(msg);
     });
-  });
+});
 
+// *** RESTARIZZAZIONE
+
+//global.store.Project[0].Service[0].url = '/mio/path'
+app.get('*', (req, res, next)=>{
+    console.log('STAR ROUTE - ' + req.originalUrl)
+
+    // I CHECK WHETHER THE ROUTE IS A REGISTERED ONE
+    if(req.originalUrl == '/mio/path'){
+        console.log('FOUND REST PATH')
+    }
+})
 
