@@ -582,7 +582,7 @@ var root = document.createElement('div')
 
    // *****************
 // *** SOCKET CONF
-var sockHost = location.origin.replace(/^http/, 'wss') + '/sock' //'ws://katecode.herokuapp.com/sock'
+var sockHost = location.origin.replace(/^https/, 'wss') + '/sock' //'ws://katecode.herokuapp.com/sock'
 var ws = new WebSocket(sockHost)
 ws.onopen = event => {
     //ws.send('ux.app.session.start') 
@@ -3300,8 +3300,8 @@ document.register('windowDev.saveCurrentComponent', ev => {
 
 */
 
-var sockHost = location.origin.replace(/^http/, 'wss') + '/sock' //'ws://katecode.herokuapp.com/sock'
-
+var sockHost = location.origin.replace(/^https/, 'wss') + '/sock' //'ws://katecode.herokuapp.com/sock'
+alert(sockHost)
 // ********** FOR EACH COMPONENT FOR EACH EVENT
 
 function ctaFileListener (ev) {
