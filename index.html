@@ -5,8 +5,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
     document.head.appendChild(head());
     window.onload = () => {
         document.body.appendChild(body());
-        store = JSON.parse(document.getElementById('ux-local-store').innerHTML);
-        document.getElementById('ux-local-store').innerHTML = '';
+        //store = JSON.parse(document.getElementById('ux-local-store').innerHTML);
+        document.getElementById('ux-local-store').innerHTML = JSON.stringify(store);
     }
 });
 </script>
@@ -20,7 +20,36 @@ Bla bla bla</div></div>
 </div>
 <script id="ux-assets-script"></script>
 <style id="ux-assets-css"></style>
-<script>function accordion() 
+<script>function aaa() 
+{
+var root = document.createElement('div')
+var Projects = [
+    {
+        projectName: 'Project_0',
+        Component: [
+            {
+                fileName: 'component_0',
+                ux: "div root",
+                js: "",
+                css: "",
+                node: ""               
+            },
+        ]
+    }
+]
+
+
+store.Project = Projects;
+
+document.em('windowDev.loadComponent',{projectId:0,componentId:0})
+root.setAttribute('ux-comp-name','aaa')
+let style = document.createElement('style')
+style.setAttribute('ux-comp-name-css','aaa')
+style.textContent = ``
+root.appendChild(style)
+return root
+}
+function accordion() 
 {
 var root = document.createElement('div')
 root.style.display='flex'
@@ -185,6 +214,7 @@ content.style.flexGrow='1'
 content.style.backgroundColor='#f3f3f3'
 var w2 = windowDev()
 var hlp = help()
+var aaa_17 = aaa()
 
 content.appendChild(w2)
 
@@ -196,6 +226,9 @@ div_7.appendChild(content)
 
 
 root.appendChild(div_7)
+
+
+root.appendChild(aaa_17)
 
 
 
@@ -548,7 +581,14 @@ var root = document.createElement('div')
 
 
    // *****************
+// *** SOCKET CONF
+var ws = new WebSocket("ws://localhost:3000/sock")
+ws.onopen = event => {
+    //ws.send('ux.app.session.start') 
+    document.em('ux.socket.started')
+}
 
+//document.ws = ws 
 root.setAttribute('ux-comp-name','eventConf')
 let style = document.createElement('style')
 style.setAttribute('ux-comp-name-css','eventConf')
@@ -2027,18 +2067,31 @@ root.style.position='fixed'
 root.style.border='1px solid white'
 root.style.background='rgb(60,57,57)'
 root.style.background='radial-gradient(circle, rgba(60,57,57,1) 0%, rgba(60,58,58,1) 100%, rgba(86,110,159,1) 100%)'
-var ctaNew = document.createElement('div')
-ctaNew.append(document.createTextNode( 'New'))
-ctaNew.style.margin='5px 5px'
-ctaNew.style.padding='10px'
-ctaNew.style.fontFamily='"Open Sans", "Courier New"'
-ctaNew.style.fontSize='12px'
-ctaNew.style.color='white'
+var ctaNewProject = document.createElement('div')
+ctaNewProject.append(document.createTextNode( 'New Project'))
+ctaNewProject.style.cursor='pointer'
+ctaNewProject.style.margin='5px 5px'
+ctaNewProject.style.padding='10px'
+ctaNewProject.style.fontFamily='"Open Sans", "Courier New"'
+ctaNewProject.style.fontSize='12px'
+ctaNewProject.style.color='white'
+var ctaNewComponent = document.createElement('div')
+ctaNewComponent.append(document.createTextNode( 'New Component'))
+
+root.appendChild(ctaNewProject)
+
+ctaNewComponent.style.cursor='pointer'
+ctaNewComponent.style.margin='5px 5px'
+ctaNewComponent.style.padding='10px'
+ctaNewComponent.style.fontFamily='"Open Sans", "Courier New"'
+ctaNewComponent.style.fontSize='12px'
+ctaNewComponent.style.color='white'
 var ctaOpen = document.createElement('div')
 ctaOpen.append(document.createTextNode( 'Open'))
 
-root.appendChild(ctaNew)
+root.appendChild(ctaNewComponent)
 
+ctaOpen.style.cursor='pointer'
 ctaOpen.style.margin='5px 5px'
 ctaOpen.style.padding='10px'
 ctaOpen.style.fontFamily='"Open Sans", "Courier New"'
@@ -2078,13 +2131,22 @@ ctaDownload.style.cursor='pointer'
 
 root.appendChild(ctaDownload)
 
-ctaNew.onmouseover = ev => {
-    ctaNew.style.background = 'rgb(35,38,39)'
-    ctaNew.style.background = 'radial-gradient(circle, rgba(35,38,39,0.9982274159663865) 100%, rgba(235,235,235,1) 100%, rgba(86,110,159,1) 100%)'
+ctaNewComponent.onmouseover = ev => {
+    ctaNewComponent.style.background = 'rgb(35,38,39)'
+    ctaNewComponent.style.background = 'radial-gradient(circle, rgba(35,38,39,0.9982274159663865) 100%, rgba(235,235,235,1) 100%, rgba(86,110,159,1) 100%)'
 }
 
-ctaNew.onmouseleave = ev => {
-    ctaNew.style.background = 'initial'
+ctaNewComponent.onmouseleave = ev => {
+    ctaNewComponent.style.background = 'initial'
+}
+
+ctaNewProject.onmouseover = ev => {
+    ctaNewProject.style.background = 'rgb(35,38,39)'
+    ctaNewProject.style.background = 'radial-gradient(circle, rgba(35,38,39,0.9982274159663865) 100%, rgba(235,235,235,1) 100%, rgba(86,110,159,1) 100%)'
+}
+
+ctaNewProject.onmouseleave = ev => {
+    ctaNewProject.style.background = 'initial'
 }
 
 ctaOpen.onmouseover = ev => {
@@ -2154,6 +2216,17 @@ ctaDownload.onclick = ev => {
         // There was an error
         console.warn('Something went wrong.', err);
     });
+}
+
+
+ctaNewComponent.onclick = ev => {
+    var currentProject = 0
+    var project = store.Project[currentProject]
+    var Component = project.Component
+
+    Component.push({fileName:'component_'+Component.length,ux:'',js:'',css:'',node:''})
+    document.em('windowDev.loadComponent', {projectId:currentProject,componentId:Component.length-1})
+    root.style.display = 'none'
 }
 root.setAttribute('ux-comp-name','menuFile')
 let style = document.createElement('style')
@@ -2300,61 +2373,57 @@ return root
 function project() 
 {
 var root = document.createElement('div')
-root.append(document.createTextNode( 'Hello Project panel'))
-root.style.position='absolute'
 root.style.backgroundColor='white'
-// PER ENTRARE E USCIRE ABBIAMO BISOGNO DI UN NUMERO DI INDICE
+root.style.width='200px'
+root.style.height='400px'
+root.style.position='absolute'
+root.style.flexDirection='column'
+var projectName = document.createElement('h1')
+projectName.append(document.createTextNode( 'projectName'))
+var compContainer = document.createElement('div')
 
-// I DATI SONO UGUALI ALLE UI - JUST USE LOCAL VARS!!!!
-var projects = [
-    {
-        projectName: 'default project',
-        comps: [
-            {
-                fileName: 'componentName.ux',
-                ux: "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com",
-                js: "root.style.backgroundColor = 'blue'"               
-            }
-        ]
-    }
-]
-
-var comps = [
-    {
-        fileName: 'componentName.ux',
-        ux: "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com",
-        js: "root.style.backgroundColor = 'blue'"
-    },
-    {
-        fileName: 'componentName2.ux',
-        ux: "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com",
-        js: "root.style.backgroundColor = 'blue'"
-    }
-]
+root.appendChild(projectName)
 
 
-// fileName.value = 'componentName.ux'
-// textareaCode.value = "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com"
-// textareaScript.value = "root.style.backgroundColor = 'blue'"
-
-// QUI POSSO DISEGNARE L'API REST CE AVEVO IMMAGINATO
-
-// IP.1 - name matching
-// satisfy all configurations
-// document.em('component', projects[0].comps[0])
-// document.register('component', evprojects[0].comps[0])
-
-// Il servizio rest restituisce un elemento e il suo indice, in generale la query per cercare l'elemento preso by indice
-
-// ARRAY INDICIZZATI DA ZERO A UNO QUINDI CHIAVI SEMPRE PRIMARIE RISPETTO AD UNA ENTITY
+root.appendChild(compContainer)
 
 
 
-//document.register
+document.register('project.showPanel', ev => {
+    compContainer.innerHTML = ''
+    store.Project[0].Component.forEach( (e,i,arr) => {
+        var h5 = document.createElement('h5')
+        h5.textContent = e.fileName
+        h5.className = 'project-item'
+        h5.onclick = ev => {
+            //caricare i dati del componente selezionato
+            // store.Projects[0].Comps[0].ux
+            // store.Projects[0].Comps[0].js
+            document.em('windowDev.saveCurrentComponent')
+            document.em('windowDev.loadComponent',{projectId:0,componentId:i})
+            root.style.display = 'none'
+        }
+        compContainer.append(h5)
+    })
+
+})
+
+
+
+
+
+
+
 root.setAttribute('ux-comp-name','project')
 let style = document.createElement('style')
 style.setAttribute('ux-comp-name-css','project')
-style.textContent = ``
+style.textContent = `.project-item {
+    cursor: pointer;
+}
+
+.project-item:hover {
+    border-bottom: solid 3px blue;
+}`
 root.appendChild(style)
 return root
 }
@@ -2714,20 +2783,20 @@ imgCss.style.padding='10px'
 imgCss.style.fontFamily='"Open Sans", "Courier New"'
 imgCss.style.fontSize='12px'
 imgCss.style.color='white'
-var span_52 = document.createElement('span')
-span_52.append(document.createTextNode( '{node js}'))
+var imgNode = document.createElement('span')
+imgNode.append(document.createTextNode( '{node js}'))
 
 div_15.appendChild(imgCss)
 
-span_52.style.margin='5px 5px'
-span_52.style.padding='10px'
-span_52.style.fontFamily='"Open Sans", "Courier New"'
-span_52.style.fontSize='12px'
-span_52.style.color='white'
+imgNode.style.margin='5px 5px'
+imgNode.style.padding='10px'
+imgNode.style.fontFamily='"Open Sans", "Courier New"'
+imgNode.style.fontSize='12px'
+imgNode.style.color='white'
 var span_58 = document.createElement('span')
 span_58.append(document.createTextNode( '{python}'))
 
-div_15.appendChild(span_52)
+div_15.appendChild(imgNode)
 
 span_58.style.margin='5px 5px'
 span_58.style.padding='10px'
@@ -2836,9 +2905,21 @@ textareaCss.style.fontSize='14px'
 textareaCss.style.backgroundColor='black'
 textareaCss.style.color='white'
 textareaCss.style.display='none'
-var resizer = document.createElement('div')
+var textareaNode = document.createElement('textarea')
 
 codeArea.appendChild(textareaCss)
+
+textareaNode.style.resize='none'
+textareaNode.style.width='100%'
+textareaNode.style.height='100%'
+textareaNode.style.fontFamily='Consolas, "Courier New", monospace'
+textareaNode.style.fontSize='14px'
+textareaNode.style.backgroundColor='black'
+textareaNode.style.color='white'
+textareaNode.style.display='none'
+var resizer = document.createElement('div')
+
+codeArea.appendChild(textareaNode)
 
 
 root.appendChild(codeArea)
@@ -2853,6 +2934,8 @@ resizer.style.bottom='-5px'
 resizer.style.cursor='nwse-resize'
 
 root.appendChild(resizer)
+
+
 
 textareaCode.onkeydown = ev => {
     if(ev.keyCode == 9){
@@ -2893,6 +2976,20 @@ textareaCss.onkeydown = ev => {
         const strSecondLen = strLen.length-strFirstLen.length
         textareaCss.value = textareaCss.value.substr(0, caretPos) + "    " + textareaCss.value.substr(caretPos, strSecondLen)
         textareaCss.selectionEnd = caretPos + 4
+    } 
+}
+
+textareaNode.onkeydown = ev => {
+    if(ev.keyCode == 9){
+        ev.preventDefault()
+        //prendo il caret e aggiungo quattro spazi
+        const caretPos = textareaNode.selectionStart
+        const startCode1 = 0
+        const strFirstLen = textareaNode.value.substr(0, caretPos)
+        const strLen = textareaNode.value
+        const strSecondLen = strLen.length-strFirstLen.length
+        textareaNode.value = textareaNode.value.substr(0, caretPos) + "    " + textareaNode.value.substr(caretPos, strSecondLen)
+        textareaNode.selectionEnd = caretPos + 4
     } 
 }
 
@@ -2984,6 +3081,7 @@ imgCode.onclick = ev => {
     textareaScript.style.display = 'none'
     textareaCss.style.display = 'none'
     contentArea.style.display = 'none'
+    textareaNode.style.display = 'none'
 
     imgCode.style.backgroundColor = 'blue'    
     imgScript.style.backgroundColor = 'initial'
@@ -2998,10 +3096,12 @@ imgScript.onclick = ev => {
     textareaScript.style.display = 'block'
     textareaCss.style.display = 'none'
     contentArea.style.display = 'none'
+    textareaNode.style.display = 'none'
 
     imgCode.style.backgroundColor = 'initial'    
     imgScript.style.backgroundColor = 'blue'
     imgCss.style.backgroundColor = 'initial'
+    imgNode.style.backgroundColor = 'initial'
 
     textareaScript.focus()
 }
@@ -3012,13 +3112,34 @@ imgCss.onclick = ev => {
     textareaScript.style.display = 'none'
     textareaCss.style.display = 'block'
     contentArea.style.display = 'none'
+    textareaNode.style.display = 'none'
 
     imgCode.style.backgroundColor = 'initial'    
     imgScript.style.backgroundColor = 'initial'
-    imgCss.style.backgroundColor = 'red'
+    imgCss.style.backgroundColor = 'orange'
+    imgNode.style.backgroundColor = 'initial'
+
 
     textareaCss.focus()
 }
+
+imgNode.onclick = ev => {
+    codeArea.style.display = 'flex'
+    textareaCode.style.display = 'none'
+    textareaScript.style.display = 'none'
+    textareaCss.style.display = 'none'
+    contentArea.style.display = 'none'
+    textareaNode.style.display = 'block'
+
+    imgCode.style.backgroundColor = 'initial'    
+    imgScript.style.backgroundColor = 'initial'
+    imgCss.style.backgroundColor = 'initial'
+    imgNode.style.backgroundColor = 'pink'
+
+    textareaCss.focus()
+}
+
+
 
 var count = 0
 imgPreview.onclick = ev => {
@@ -3040,34 +3161,23 @@ imgPreview.onclick = ev => {
     contentArea.innerHTML = ''
     contentArea.append(functionName())
 
-
-
-    /*     var script = document.createElement('script')
-    script.append(document.createTextNode(code)) */
-
-    // DA OTTIMIZZARE ATTACCA UNO SCRIPT PER OGNI COMPILAZIONE
-    //document.body.appendChild(script)
-    //document.json('saveGenScript', {fileName: fileName.value, code: code})
-    //document.register('saveGenScript' ev => {
-    //    alert(ev.detail)
-    //})
-
-
-
-
-
-    //document.eventManager('windowDev.imgPreviewClicked', {fileName: "test.ux", code: textareaCode.value})
+    // TRANSACTION !!!
+    document.json('newService',{projectId:0,code:textareaNode.value})
+    
+    document.json('runService',{projectId:0,serviceId:0})
+    
 }
 
 panelPrj.style.display = 'none'
 
 fileName.onclick = ev => {
+    document.em('project.showPanel')
     // show/hide project component
     if(panelPrj.style.display == 'none'){
         panelPrj.style.display = 'flex'
         var rect = fileName.getBoundingClientRect();
         panelPrj.left = rect.x + 'px';
-        panelPrj.top = rect.bottom+'px';
+        panelPrj.top = rect.top+'px';
     } else {
         panelPrj.style.display = 'none'
     }
@@ -3141,60 +3251,6 @@ makeMovableDiv(root, windowImgMove);
   
 root.contentArea = contentArea
 
-var v = 0
-function updateContent (ev){
-
-/*     (async () => {
-        const myModule = await import('./test_0.js');
-
-        contentArea.innerHTML = ''
-        contentArea.append(myModule.default())
-        contentArea.style.display = 'block'
-
-    })(); */
-    console.log('importing...')
-    import('./test.js?query='+v).then(module => {
-        contentArea.innerHTML = ''
-        contentArea.append(module.default())
-        contentArea.style.display = 'block'
-    }).catch((err)=>{
-        console.log('catch - ' + err)
-    })
-
-    v++
-
-}
-
-document.registerDefault(updateContent)
-
-document.register('showFile', ev=>{
-    count++
-
-    // compSource.read()
-    // 
-    // fileName.value = ev.detail.fileName
-
-
-    document.json('file', {fileName:ev.detail.fileName}).then(data=>{
-        textareaCode.value = data.code
-        textareaScript.value = data.scriptCode
-        textareaCss.value = data.cssCode
-        fileName.value = ev.detail.fileName
-        
-        var fileToImport = fileName.value.substr(0,fileName.value.length-3)
-        import('./'+fileToImport+'.js?'+count).then(module => {
-            var dom = module.default()
-            contentArea.innerHTML = ''
-            contentArea.append(dom)
-            root.style.display = 'flex'
-        })  
-        
-        component.get()
-
-        contentArea.innerHTML = ''
-        contentArea.append(preview)
-    })
-})
 
 document.register('windowDev.textareaCode.append', ev => {
     
@@ -3202,45 +3258,261 @@ document.register('windowDev.textareaCode.append', ev => {
     textareaCss.value = textareaCss.value + '\n' + riga
 })
 
-
-// TODO - HERE FOR TESTING DX LANG
-//function fakecomesempre (){}
-document.register('windowDev.saveComponent', ev => {
-    //component.someProp = ev.details.overrideVal
-    //fakecomesempre(component)
-    //updateOrCreate(component) // alias save()
+document.register('windowDev.loadComponent', ev => {
+    currentProject = ev.detail.projectId
+    currentComponent = ev.detail.componentId
+    fileName.value = store.Project[currentProject].Component[currentComponent].fileName
+    textareaCode.value = store.Project[currentProject].Component[currentComponent].ux
+    textareaScript.value = store.Project[currentProject].Component[currentComponent].js
+    textareaCss.value = store.Project[currentProject].Component[currentComponent].css
+    textareaNode.value = store.Project[currentProject].Component[currentComponent].node
 })
 
 
-// DATA INIZIALITATION
-// component.forEach()
+
+var currentProject = 0
+var currentComponent = 0
+document.register('windowDev.saveCurrentComponent', ev => {
+    store.Project[currentProject].Component[currentComponent].fileName = fileName.value
+    store.Project[currentProject].Component[currentComponent].ux = textareaCode.value
+    store.Project[currentProject].Component[currentComponent].js = textareaScript.value
+    store.Project[currentProject].Component[currentComponent].css = textareaCss.value
+    store.Project[currentProject].Component[currentComponent].node = textareaNode.value
+})
 
 
 
-// COMPONENT DTO
-// read ma da dove!!!!!!!
-// document.em('project[0].read()')
-// fileName.value = component.fileName  || projects.comps[0].fileName
-// textareaCode.value = component.ux
-// textareaScript.value = component.js
-
-// read(component) ==>
-
-// document.em('component')
-
-// read_component()
-
-// fileName.value = 'componentName.ux'
-// textareaCode.value = "div root\n    h1 'Hello World\n    a 'kate-code\n        .href http://katecode.herokuapp.com"
-// textareaScript.value = "root.style.backgroundColor = 'blue'"
 
 
+// **********   SOCKET
 
-//            img imgCode
-//                -cursor pointer
-//                .onmouseover ev => {imgCode.src="./img/baseline_code_black_18dp.png"}
-//                .onmouseleave ev => {imgCode.src="./img/baseline_code_white_18dp.png"}
-//                .src ./img/baseline_code_white_18dp.png
+/*
+
+{
+    "username": 0,
+    "projectId": 0,
+    "componentId": 0,
+    "passcode": "jckokhfehgimrn" 
+    "componentUri": "windowDev.imgPreview.click",
+    "m": "windowDev.imgPreview.click"
+}
+
+*/
+
+
+// ********** FOR EACH COMPONENT FOR EACH EVENT
+
+function ctaFileListener (ev) {
+    var ws = new WebSocket("ws://localhost:3000/sock")
+    ws.onopen = event => {
+            ws.send(JSON.stringify({
+                componentUri: 'windowDev.ctaFile.click',
+                m:'windowDev.ctaFile.click'
+            })) 
+    }
+    ws.addEventListener('message', event => {
+                if(JSON.parse(event.data).m === 'windowDev.ctaFile.click') {
+                    document.em('windowDev.ctaFile.click')
+                }
+        })
+}
+
+function ctaImgCodeListener (ev) {
+    
+    var ws = new WebSocket("ws://localhost:3000/sock")
+    
+    ws.onopen = event => {
+        
+        ws.send(JSON.stringify({
+            componentUri: 'windowDev.imgCode.click',
+            m:'windowDev.imgCode.click'
+        })) 
+    }
+    ws.addEventListener('message', event => {
+                
+                if(JSON.parse(event.data).m === 'windowDev.imgCode.click') {
+                    document.em('windowDev.imgCode.click')
+                }
+        })
+}
+
+function ctaImgScriptListener (ev) {
+    var ws = new WebSocket("ws://localhost:3000/sock")
+    ws.onopen = event => {
+        ws.send(JSON.stringify({
+            componentUri: 'windowDev.imgScript.click',
+            m:'windowDev.imgScript.click'
+        })) 
+    }
+    ws.addEventListener('message', event => {
+                if(JSON.parse(event.data).m === 'windowDev.imgScript.click') {
+                    document.em('windowDev.imgScript.click')
+                }
+        })
+}
+
+function ctaImgCssListener (ev) {
+    var ws = new WebSocket("ws://localhost:3000/sock")
+    ws.onopen = event => {
+        ws.send(JSON.stringify({
+            componentUri: 'windowDev.imgCss.click',
+            m:'windowDev.imgCss.click'
+        })) 
+    }
+    ws.addEventListener('message', event => {
+                if(JSON.parse(event.data).m === 'windowDev.imgCss.click') {
+                    document.em('windowDev.imgCss.click')
+                }
+        })
+}
+
+function ctaImgPreviewListener (ev) {
+    var ws = new WebSocket("ws://localhost:3000/sock")
+    ws.onopen = event => {
+        ws.send(JSON.stringify({
+            componentUri: 'windowDev.imgPreview.click',
+            m:'windowDev.imgPreview.click'
+        })) 
+    }
+    ws.addEventListener('message', event => {
+                if(JSON.parse(event.data).m === 'windowDev.imgPreview.click') {
+                    document.em('windowDev.imgPreview.click')
+                }
+        })
+}
+
+function ctaFileListenerMouseLeave (ev) {
+    var ws = new WebSocket("ws://localhost:3000/sock")
+    ws.onopen = event => {
+        ws.send(JSON.stringify({
+            componentUri: 'windowDev.ctaFile.mouseleave',
+            m:'windowDev.ctaFile.mouseleave'
+        })) 
+    }
+        ws.addEventListener('message',  event => {
+            if(JSON.parse(event.data).m === 'windowDev.ctaFile.mouseleave') {
+                document.em('windowDev.ctaFile.mouseleave')
+            }
+        })
+}
+
+function textareaCodeKeyup (ev) {
+    var ws = new WebSocket("ws://localhost:3000/sock")
+    ws.onopen = event => {
+            
+            ws.send(JSON.stringify({
+                componentUri: 'windowDev.textareaCode.keyup',
+                m: textareaCode.value
+            }))
+    }
+    ws.addEventListener('message', event => {  
+            if(JSON.parse(event.data).componentUri === 'windowDev.textareaCode.keyup') {
+                textareaCode.value = JSON.parse(event.data).m
+            }
+        })
+}
+
+function textareaScriptKeyup (ev) {
+    var ws = new WebSocket("ws://localhost:3000/sock")
+    ws.onopen = event => {
+        ws.send(JSON.stringify({
+            componentUri: 'windowDev.textareaScript.keyup',
+            m: textareaScript.value
+        }))
+    }
+    ws.addEventListener('message', event => {  
+            if(JSON.parse(event.data).componentUri === 'windowDev.textareaScript.keyup') {
+                textareaScript.value = JSON.parse(event.data).m
+            }
+        })
+}
+
+function textareaCssKeyup (ev) {
+    var ws = new WebSocket("ws://localhost:3000/sock")
+    ws.onopen = event => {
+        ws.send(JSON.stringify({
+            componentUri: 'windowDev.textareaCss.keyup',
+            m: textareaCss.value
+        }))
+    }
+    ws.addEventListener('message', event => {  
+            if(JSON.parse(event.data).componentUri === 'windowDev.textareaCss.keyup') {
+                textareaCss.value = JSON.parse(event.data).m
+            }
+        })
+}
+
+document.register('windowDev.ctaFile.click', ev => {
+    ctaFile.removeEventListener('click',ctaFileListener)
+    ctaFile.click()
+    ctaFile.addEventListener('click',ctaFileListener)
+})
+
+document.register('windowDev.imgCode.click', ev => {
+    imgCode.removeEventListener('click',ctaImgCodeListener)
+    imgCode.click()
+    imgCode.addEventListener('click',ctaImgCodeListener)
+})
+
+document.register('windowDev.imgScript.click', ev => {
+    imgScript.removeEventListener('click',ctaImgScriptListener)
+    imgScript.click()
+    imgScript.addEventListener('click',ctaImgScriptListener)
+})
+
+document.register('windowDev.imgCss.click', ev => {
+    imgCss.removeEventListener('click',ctaImgCssListener)
+    imgCss.click()
+    imgCss.addEventListener('click',ctaImgCssListener)
+})
+
+document.register('windowDev.imgPreview.click', ev => {
+    imgPreview.removeEventListener('click',ctaImgPreviewListener)
+    imgPreview.click()
+    imgPreview.addEventListener('click',ctaImgPreviewListener)
+})
+
+document.register('windowDev.ctaFile.mouseleave', ev => {
+    ctaFile.removeEventListener('mouseleave',ctaFileListenerMouseLeave)
+    ctaFile.dispatchEvent(new Event('mouseleave'))
+    ctaFile.addEventListener('mouseleave',ctaFileListenerMouseLeave)
+})
+
+
+ctaFile.addEventListener('click',ctaFileListener)
+ctaFile.addEventListener('mouseleave',ctaFileListenerMouseLeave)
+
+imgCode.addEventListener('click', ctaImgCodeListener)
+imgScript.addEventListener('click', ctaImgScriptListener)
+imgCss.addEventListener('click', ctaImgCssListener)
+imgPreview.addEventListener('click', ctaImgPreviewListener)
+
+textareaCode.addEventListener('keyup', textareaCodeKeyup)
+textareaScript.addEventListener('keyup', textareaScriptKeyup)
+textareaCss.addEventListener('keyup', textareaCssKeyup)
+//textareaNode.addEventListener('keyup', textareaCodeKeyup)
+
+// ***************
+
+//document.register('ux.socket.started', ev => {
+    ctaFile.click();
+    imgCode.click();
+    imgScript.click();
+    imgCss.click();
+    imgPreview.click();
+    ctaFile.dispatchEvent(new Event('mouseleave'));
+    textareaCode.dispatchEvent(new Event('keyup'))
+    //ctaFile.dispatchEvent(new Event('mouseleave'))
+    textareaScript.dispatchEvent(new Event('keyup'))
+    textareaCss.dispatchEvent(new Event('keyup'))
+
+    //ctaFileListener()
+
+    //document.em('windowDev.ctaFile.click')
+//})
+
+
+// *************** END SOCKET
 root.setAttribute('ux-comp-name','windowDev')
 let style = document.createElement('style')
 style.setAttribute('ux-comp-name-css','windowDev')
