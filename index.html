@@ -2834,6 +2834,7 @@ fileName.style.marginRight='10px'
 fileName.style.fontSize='large'
 fileName.setAttribute('type', 'text')
 fileName.setAttribute('value', 'undefined')
+fileName.setAttribute('class', 'fileName')
 var panelPrj = project()
 
 div_72.appendChild(fileName)
@@ -3412,7 +3413,8 @@ function textareaCodeKeyup (ev) {
     }
     ws.addEventListener('message', event => {  
             if(JSON.parse(event.data).componentUri === 'windowDev.textareaCode.keyup') {
-                textareaCode.value = JSON.parse(event.data).m
+                document.em('windowDev.textareaCode.keyup',{code:JSON.parse(event.data).m})
+                //textareaCode.value = JSON.parse(event.data).m 
             }
         })
 }
@@ -3427,7 +3429,8 @@ function textareaScriptKeyup (ev) {
     }
     ws.addEventListener('message', event => {  
             if(JSON.parse(event.data).componentUri === 'windowDev.textareaScript.keyup') {
-                textareaScript.value = JSON.parse(event.data).m
+                document.em('windowDev.textareaScript.keyup',{code:JSON.parse(event.data).m})
+                //textareaScript.value = JSON.parse(event.data).m
             }
         })
 }
@@ -3483,6 +3486,20 @@ document.register('windowDev.ctaFile.mouseleave', ev => {
     ctaFile.addEventListener('mouseleave',ctaFileListenerMouseLeave)
 })
 
+document.register('windowDev.textareaCode.keyup', ev => {
+    textareaCode.removeEventListener('keyup',textareaCodeKeyup)
+    textareaCode.value = ev.detail.code
+    textareaCode.addEventListener('keyup',textareaCodeKeyup)
+})
+
+document.register('windowDev.textareaScript.keyup', ev => {
+    textareaScript.removeEventListener('keyup',textareaScriptKeyup)
+    textareaScript.value = ev.detail.code
+    textareaScript.addEventListener('keyup',textareaScriptKeyup)
+})
+
+
+
 
 ctaFile.addEventListener('click',ctaFileListener)
 ctaFile.addEventListener('mouseleave',ctaFileListenerMouseLeave)
@@ -3524,7 +3541,21 @@ document.register('windowDev.connectSocket', ev => {
 root.setAttribute('ux-comp-name','windowDev')
 let style = document.createElement('style')
 style.setAttribute('ux-comp-name-css','windowDev')
-style.textContent = ``
+style.textContent = `.fileName {
+    padding: 8px;
+    font-size: 25px;
+    border-width: 1px;
+    border-color: #CCCCCC;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-style: hidden;
+    border-radius: 13px;
+    box-shadow: 9px 9px 18px rgba(179,61,116,.75);
+    text-shadow: 0px 0px 0px rgba(66,66,66,.75);
+}
+.fileName:focus {
+    outline:none;
+}`
 root.appendChild(style)
 return root
 }
